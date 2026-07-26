@@ -1,0 +1,21 @@
+{
+  "name": "spec-vjc-framework",
+  "owner": {
+    "name": "Victor Javier Corral Franco",
+    "email": "victorjaviercorral@gmail.com",
+    "url": "https://victorjaviercorral.com"
+  },
+  "description": "Marketplace del framework Spec-Driven Development de Victor Javier Corral.",
+  "plugins": [
+    {
+      "name": "spec-vjc-framework",
+      "source": "./",
+      "description": "Framework Spec-Driven Development para MVPs y proyectos personales. Pipeline: /spec-init > /prd-lite > /specify > /prototype > /plan > /tasks, con /quality-gate (revision ciega) y /design-system reutilizable.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Victor Javier Corral Franco",
+        "url": "https://victorjaviercorral.com"
+      }
+    }
+  ]
+}
