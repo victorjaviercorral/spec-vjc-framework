@@ -9,7 +9,8 @@ Genera `docs/04-prototipo/prototype.html`: UN unico archivo HTML autocontenido (
 ## Antes de generar
 1. Lee `docs/02-spec/spec.md` y `docs/03-diseno/design-identity.md`.
 2. Activa las skills de diseno disponibles (ui-ux-pro-max, taste-skill, frontend-design). La identidad del proyecto GOBIERNA sus recomendaciones (constitution D.12): nada de look generico.
-3. Si el proyecto usa un design system de `design-systems/`, aplica sus tokens.
+3. Si el prototipo incluye animaciones, microinteracciones o gestos (drag, swipe, momentum), activa SIEMPRE juntas `emil-design-eng` y `apple-design` (constitution D.12) — no una sola. Emil cubre pulido de componente, performance y curvas de easing; Apple cubre fisicidad, manejo directo e interrumpibilidad. Usadas por separado, el resultado es notablemente menos original.
+4. Si el proyecto usa un design system de `design-systems/`, aplica sus tokens.
 
 ## Requisitos del prototipo
 - Cubre el flujo principal completo y al menos 1 camino alternativo.
