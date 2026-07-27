@@ -1,3 +1,12 @@
+---
+proyecto: <slug-del-proyecto>
+tipo: comunicacion
+estado: borrador
+version: 1
+fecha: <YYYY-MM-DD>
+tags: [spec-vjc, comunicacion]
+---
+
 # Comunicacion — <Fase o entregable> — <Proyecto>
 
 **Fecha:** <YYYY-MM-DD> · **Audiencia:** <docs publicas | LinkedIn | ambas>

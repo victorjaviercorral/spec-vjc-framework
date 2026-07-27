@@ -1,3 +1,12 @@
+---
+proyecto: <slug-del-proyecto>
+tipo: diseno
+estado: borrador
+version: 0.1
+fecha: <YYYY-MM-DD>
+tags: [spec-vjc, diseno]
+---
+
 # Design Identity — <Proyecto>
 
 **Personalidad (3 adjetivos):**

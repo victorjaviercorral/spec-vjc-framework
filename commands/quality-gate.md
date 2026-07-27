@@ -1,20 +1,39 @@
 ---
-description: Revision ciega e independiente de un artefacto (prd | spec) mediante sub-agente fresco sin acceso a la autoevaluacion. 1 revision por defecto.
-argument-hint: <prd | spec>
+description: Revisión ciega e independiente de un artefacto (prd | spec | plan) mediante el agente quality-reviewer, sin acceso a la conversación ni a la autoevaluación. Una revisión por defecto.
+argument-hint: <prd | spec | plan>
 ---
 
 # /quality-gate
 
-Ejecuta UNA revision ciega del artefacto indicado. Rondas adicionales SOLO si el usuario las solicita explicitamente (maximo 2 extra).
+Ejecuta UNA revisión ciega del artefacto indicado. Rondas adicionales SOLO si el usuario las solicita explícitamente (máximo 2 extra, constitution C.12).
+
+## Paso 0 — Precondiciones
+- El artefacto debe existir y no estar vacío.
+- Lee `docs/00-proyecto/project.md` para conocer etapa y exposición: determinan el umbral aplicable.
+- Si la etapa es Boceto o Prototipo y el usuario no lo ha pedido explícitamente, recuérdale que este gate no es obligatorio (constitution C.15) y pide confirmación antes de gastar el tiempo.
 
 ## Protocolo
-1. Lanza un sub-agente (Task) SIN acceso a: la conversacion previa, la autoevaluacion del autor, ni versiones anteriores. Solo recibe: el artefacto, la rubrica correspondiente y la constitution.
-2. El sub-agente puntua 0-10 por dimension y emite veredicto: PASS (>= 7.5), CONDICIONAL (6.0-7.4), FAIL (< 6.0), con maximo 5 hallazgos concretos ordenados por severidad y accion correctora propuesta.
-3. Rubrica PRD-lite: D1 problema+evidencia (fuentes, fechas, "por que ahora"), D2 hipotesis+go/no-go (medible, plazos), D3 requisitos criticos+exclusiones (completos, sin ambiguedad).
-4. Rubrica spec: D1 trazabilidad (todo requisito con origen y criterio de verificacion; RC-XX cubiertos al 100 por ciento o FAIL automatico), D2 completitud tecnica (modelo de datos, contratos, estados de error), D3 seguridad+performance (checklists aplicadas item a item).
-5. El resultado se anexa al final del artefacto en una seccion "Quality Gate" con fecha, veredicto y hallazgos. Sin reescribir el historial.
+1. Lanza el agente `quality-reviewer` (Task, `subagent_type: quality-reviewer`). Recibe **únicamente**: el contenido del artefacto, la rúbrica que le corresponde y `${CLAUDE_PLUGIN_ROOT}/constitution.md`. Nunca: la conversación previa, tu autoevaluación, versiones anteriores ni el veredicto de gates anteriores.
+2. El agente devuelve: puntuación 0-10 por dimensión con la banda justificada, veredicto, y hallazgos con **cita obligatoria** de la sección o línea del artefacto que los sustenta.
+3. Aplica el criterio de avance de constitution C.14 según etapa y exposición del proyecto: media mínima **y** suelo por dimensión. Una dimensión por debajo de su suelo bloquea el avance aunque la media sea suficiente.
+4. Anexa el resultado al final del artefacto en una sección "Quality Gate" (fecha, ronda, puntuaciones, veredicto, hallazgos y resolución de cada uno). Sin reescribir el historial.
+5. Guarda además una copia en `docs/02-spec/gates/gate-<artefacto>-<YYYY-MM-DD>.md` para poder comparar entre proyectos y alimentar constitution H.34.
 
-## Criterio de avance (constitution B.5)
-- Tier ligero: PASS o CONDICIONAL >= 6.5 avanza.
-- Tier medio/completo: >= 7.0 avanza.
-- El autor corrige los hallazgos que acepte; los que rechace se documentan con razon. No hay persecucion de PASS: se aplica el criterio y se avanza o se corrige UNA vez.
+## Rúbricas
+
+**PRD-lite** — D1 problema, usuarios y evidencia (fuentes con fecha, alternativas reales, "por qué ahora" del lado del problema) · D2 hipótesis, asunciones y Go/No-Go (asunción más arriesgada identificada, métricas medibles con instrumentación) · D3 alcance, requisitos críticos y exclusiones (alcance que sirve a la hipótesis, RC sin ambigüedad).
+
+**Spec** — D1 trazabilidad (todo requisito con origen y criterio de verificación tipado; **cobertura de RC-XX < 100% ⇒ FAIL automático**) · D2 completitud técnica (arquitectura con flujo de datos, modelo de datos, contratos, estados de error) · D3 disciplinas activadas (seguridad, privacidad, accesibilidad, performance, test, operación: aplicadas ítem a ítem según la exposición del proyecto, sin ítems ignorados).
+
+**Plan** — D1 fases con definición de hecho verificable y esqueleto desplegado primero · D2 cobertura: todo requisito de la spec asignado a una fase · D3 riesgos y verificación de RC-XX asignada a fase concreta.
+
+## Anclas de puntuación (para reducir varianza entre revisiones)
+- **3** — la dimensión está esencialmente ausente o es narrativa sin sustancia verificable.
+- **5** — existe la estructura, pero con huecos que obligarían a decidir sobre la marcha durante la implementación.
+- **7** — completa y utilizable; defectos localizados que no bloquean, señalables como mejoras.
+- **9** — completa, verificable ítem a ítem y sin ambigüedad interpretable; un tercero podría implementarla sin preguntar.
+
+## Reglas del veredicto
+- Hallazgos de severidad crítica o alta: **sin límite de número**. Medios y bajos: máximo 5, los más relevantes.
+- Hallazgo sin cita al artefacto = descartado, no cuenta.
+- El autor corrige los hallazgos que acepte; los que rechace se documentan con su razón en la misma sección. No se persigue el PASS (constitution C.12).

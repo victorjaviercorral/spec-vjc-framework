@@ -1,24 +1,38 @@
 ---
-description: Genera un prototipo HTML autocontenido y navegable del producto para validacion visual antes de implementar. Requiere spec aprobada.
+description: Genera un prototipo HTML autocontenido y navegable para validar propuesta visual y flujo antes de implementar. Gate humano visual barato.
 ---
 
 # /prototype
 
-Genera `docs/04-prototipo/prototype.html`: UN unico archivo HTML autocontenido (CSS y JS inline, datos mock realistas, sin dependencias de build) que permita navegar el flujo principal definido en la spec.
+Produce `docs/04-prototipo/prototype.html`: UN único archivo HTML autocontenido (CSS y JS en línea, datos ficticios realistas, sin dependencias de build) que permita recorrer el flujo principal.
 
-## Antes de generar
-1. Lee `docs/02-spec/spec.md` y `docs/03-diseno/design-identity.md`.
-2. Activa las skills de diseno disponibles (ui-ux-pro-max, taste-skill, frontend-design). La identidad del proyecto GOBIERNA sus recomendaciones (constitution D.12): nada de look generico.
-3. Si el proyecto usa un design system de `design-systems/`, aplica sus tokens.
+Su razón de ser: es mucho más barato descartar un HTML que una implementación desplegada. Trátalo como instrumento de decisión, no como entrega.
+
+## Paso 0 — Precondiciones
+1. Lee `docs/00-proyecto/project.md` y `docs/03-diseno/design-identity.md`.
+2. Fuente del contenido según etapa: en MVP+, `docs/02-spec/spec.md`; en Prototipo, el PRD corto; en Boceto, la descripción directa del usuario.
+3. Activa las skills de diseño disponibles (ui-ux-pro-max, apple-design, emil-design-eng, frontend-design). **La identidad del proyecto gobierna sus recomendaciones** (constitution F.26): nada de look genérico de plantilla.
+4. Si el proyecto parte de un design system de `${CLAUDE_PLUGIN_ROOT}/design-systems/`, aplica sus tokens.
 
 ## Requisitos del prototipo
-- Cubre el flujo principal completo y al menos 1 camino alternativo.
-- Estados vacios, de carga y de error visibles (no solo el happy path).
-- Responsive (movil y escritorio).
-- Animaciones y microinteracciones con intencion, coherentes con la identidad (no decoracion aleatoria).
-- Marca de agua discreta "PROTOTIPO - datos ficticios".
+- Flujo principal completo y al menos un camino alternativo.
+- **Estados vacío, de carga y de error visibles**, no solo el camino feliz. Es donde se descubren los huecos de definición.
+- Responsive real, verificado a 380px.
+- Tokens primero: ningún valor en crudo en los componentes.
+- Accesibilidad de base aunque sea prototipo: contraste AA, foco visible, navegable con teclado, jerarquía semántica. Si esto no está en el prototipo, tampoco estará en la implementación.
+- Animaciones con intención y coherentes en timing y easing; respeta `prefers-reduced-motion`.
+- Copy con el tono definido en la identidad. Sin lorem ipsum: el texto falso oculta problemas de producto reales.
+- Marca de agua discreta "PROTOTIPO — datos ficticios".
+- Ningún secreto, clave ni endpoint real dentro del archivo.
+
+## Gate humano visual
+El usuario lo abre en el navegador y decide: aprueba, pide ajustes (máximo 2 iteraciones; más significa que el problema es de definición, no de píxeles) o rechaza.
+
+Al aprobar, registra en `docs/04-prototipo/decisiones-visuales.md` qué se validó, qué cambió respecto a la propuesta inicial y qué queda abierto.
+
+## Reglas
+- Si el prototipo revela un problema de fondo, se corrige la spec **antes** de continuar. La spec manda (`/amend` si ya estaba aprobada).
+- El prototipo no es la implementación: no se reutiliza su código como base salvo decisión explícita registrada.
 
 ## Cierre
-- Gate humano visual: el usuario abre el HTML en el navegador y aprueba, pide ajustes (maximo 2 iteraciones de ajuste visual) o rechaza.
-- Al aprobar: registra en `docs/04-prototipo/decisiones-visuales.md` que se valido y que cambio. Siguiente paso: `/plan`.
-- Si el prototipo revela un problema de spec, se corrige la spec ANTES de continuar (la spec manda).
+Siguiente paso según etapa: en Prototipo, enseñarlo y `/go-nogo`; en MVP+, `/plan`.

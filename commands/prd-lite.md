@@ -1,23 +1,38 @@
 ---
-description: Entrevista guiada corta que produce el PRD-lite del proyecto (1-2 paginas). Requiere /spec-init previo.
+description: Entrevista guiada que produce el PRD-lite del proyecto. Escalado por etapa: 1 página en Prototipo, completo en MVP y Producto.
 ---
 
 # /prd-lite
 
-Conduce una entrevista corta y produce `docs/01-prd/prd-lite.md` con `templates/prd-lite.md`. Lee antes `constitution.md` y `docs/00-proyecto/project.md` del proyecto.
+Produce `docs/01-prd/prd-lite.md` con `${CLAUDE_PLUGIN_ROOT}/templates/prd-lite.md`.
 
-## Como conducir
+## Paso 0 — Precondiciones
+1. Lee `${CLAUDE_PLUGIN_ROOT}/constitution.md`, `${CLAUDE_PLUGIN_ROOT}/docs/modelo.md` y `docs/00-proyecto/project.md`.
+2. Si no existe `project.md`, detente: hay que ejecutar `/spec-init` antes.
+3. Determina el **modo** según la etapa declarada:
+   - **Boceto:** este comando no aplica. Dilo y detente.
+   - **Prototipo → modo corto:** solo bloques 1, 5, 6 y 7. Objetivo: 1 página, 15-20 minutos.
+   - **MVP / Producto → modo completo:** todos los bloques.
+4. Anuncia el modo y el tiempo objetivo antes de empezar. Vigila la regla del 20% (constitution B.6): si la entrevista se alarga más allá del presupuesto de definición, dilo y cierra con `[PENDIENTE]` en lo que falte.
 
-Bloque a bloque, en este orden. En cada bloque: pregunta abierto, si la respuesta es vaga repregunta UNA vez pidiendo dato concreto, y si no existe el dato marca `[PENDIENTE]` y sigue. Muestra lo redactado al cerrar cada bloque y pide confirmacion.
+## Cómo conducir
 
-1. **Problema** (quien, que, desde cuando, por que ahora). Exige el "por que ahora": es el hueco recurrente detectado en pilotos anteriores.
-2. **Evidencia**: minimo 3 datos con fuente y fecha (tier ligero admite evidencia propia del autor, citada como tal). Observaciones cualitativas opcionales pero recomendadas, con cita literal.
-3. **Hipotesis**: formato "Creemos que [accion] para [usuario] resultara en [outcome], porque [evidencia N]".
-4. **Go/no-go**: 2-4 metricas con baseline, target, plazo y como se miden. Un criterio explicito de revision de hipotesis.
-5. **Requisitos criticos de valor**: pregunta directamente "que cosa, si falla, destruye la propuesta de valor?" (privacidad, seguridad, un comportamiento concreto). Cada respuesta se registra como REQUISITO CRITICO con ID (RC-01, RC-02...) para que /specify los baje a requisito tecnico. Este bloque existe para que la senal critica no se diluya en narrativa.
-6. **Exclusiones**: minimo 3 con justificacion.
+Bloque a bloque, en orden. En cada uno: pregunta abierta, **una sola** repregunta si la respuesta es vaga, y si el dato no existe márcalo `[PENDIENTE]` y sigue. Muestra lo redactado al cerrar cada bloque y pide confirmación.
+
+1. **Problema** — quién, qué, desde cuándo y por qué ahora. El "por qué ahora" debe responder a la urgencia del *problema*, no a la motivación del autor; si el usuario responde con su motivación, acéptala pero regístrala aparte como contexto.
+2. **Usuarios** — segmento primario y su *job to be done* en una frase ("cuando [situación], quiero [motivación], para [resultado]"). Y el **anti-usuario**: para quién NO es esto.
+3. **Alternativas hoy** — mínimo 2 formas reales en que hoy se resuelve el problema (productos, apaños, no hacer nada) y por qué son insuficientes. Si no hay ninguna alternativa, es señal de alarma: o el problema no existe o no lo has buscado.
+4. **Evidencia** — mínimo 3 datos con fuente y fecha. Evidencia propia del autor admitida en Prototipo/MVP, citada explícitamente como tal. Observaciones cualitativas con cita literal y procedencia; sin permalink verificado, `[PENDIENTE]` (nunca fabricar la referencia).
+5. **Hipótesis y asunciones** — hipótesis en formato "Creemos que [acción] para [usuario] resultará en [resultado], porque [E-n]". Después descompón en 3 asunciones y marca **la más arriesgada**: la que, si es falsa, tira todo lo demás. Cierra con cómo el trabajo de esta etapa la pone a prueba.
+6. **Alcance v1** — pregunta: *"enumera lo mínimo que un usuario debe poder hacer para que la hipótesis sea comprobable"*. Lista numerada de capacidades, una línea cada una, marcadas `must` o `should`. **Valida cada capacidad contra la hipótesis**: la que no sirva a la asunción más arriesgada, se cuestiona en voz alta o se mueve a exclusiones. Este bloque es el contrato de `/specify`.
+7. **Go / No-Go** — 2-4 métricas con baseline, target, plazo, cómo se mide y **con qué se instrumenta** (evento, consulta o contador concreto; la instrumentación baja a requisito en la spec). Más un criterio explícito de revisión de hipótesis. Al cerrar el bloque, escribe la fecha de revisión en `docs/00-proyecto/project.md` (constitution H.33).
+8. **Requisitos críticos de valor** — pregunta directa: *"¿qué cosa, si falla, destruye la propuesta de valor?"*. Cada respuesta se registra como `RC-XX`. Este bloque existe para que la señal crítica no se diluya en narrativa; `/specify` los bajará a requisito técnico verificable.
+9. **Exclusiones** — mínimo 3, cada una con su justificación.
 
 ## Gate
-- Tier ligero: quality gate opcional (ofrecelo, no lo impongas).
-- Tier medio/completo: ejecuta `/quality-gate prd` al terminar (1 revision por defecto).
-- Siguiente paso al aprobar: `/specify`.
+- Prototipo: sin gate. Ofrécelo solo si el usuario lo pide.
+- MVP: gate opcional sobre el PRD (el obligatorio es el de la spec).
+- Producto o cualquier etapa en X3: ejecuta `/quality-gate prd`.
+
+## Cierre
+Resume alcance y asunción más arriesgada en 3 líneas. Siguiente paso según la ruta de `docs/modelo.md` §4: en Prototipo, normalmente `/prototype`; en MVP/Producto, `/specify`.
