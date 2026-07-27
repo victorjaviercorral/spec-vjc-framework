@@ -12,7 +12,8 @@ Su razón de ser: es mucho más barato descartar un HTML que una implementación
 1. Lee `docs/00-proyecto/project.md` y `docs/03-diseno/design-identity.md`.
 2. Fuente del contenido según etapa: en MVP+, `docs/02-spec/spec.md`; en Prototipo, el PRD corto; en Boceto, la descripción directa del usuario.
 3. Activa las skills de diseño disponibles (ui-ux-pro-max, apple-design, emil-design-eng, frontend-design). **La identidad del proyecto gobierna sus recomendaciones** (constitution F.26): nada de look genérico de plantilla.
-4. Si el proyecto parte de un design system de `${CLAUDE_PLUGIN_ROOT}/design-systems/`, aplica sus tokens.
+4. **Si el prototipo incluye animación real o gestos** (drag, swipe, momentum — no solo hover/fade), activa siempre **juntas** `emil-design-eng` y `apple-design`, nunca una sola (constitution F.26-bis). Emil cubre pulido de componente, rendimiento y curvas de easing; Apple cubre fisicidad, manejo directo e interrumpibilidad. Usadas por separado, el resultado es notablemente menos original.
+5. Si el proyecto parte de un design system de `${CLAUDE_PLUGIN_ROOT}/design-systems/`, aplica sus tokens.
 
 ## Requisitos del prototipo
 - Flujo principal completo y al menos un camino alternativo.

@@ -19,7 +19,7 @@
 ## Interacción
 
 8. **Feedback inmediato** de toda acción del usuario: estado de carga en operaciones de más de 300ms, confirmación de las que tienen efecto, y posibilidad de deshacer en las destructivas.
-9. **Microinteracciones con propósito**, coherentes en timing y easing en toda la aplicación. La animación que no comunica nada, sobra.
+9. **Microinteracciones con propósito**, coherentes en timing y easing en toda la aplicación. La animación que no comunica nada, sobra. **Si hay animación o gesto real** (no solo hover/fade — drag, swipe, momentum), verifica que se aplicaron juntas `emil-design-eng` (easing propio, <300ms en UI, solo `transform`/`opacity`, `reduced-motion` que atenúa en vez de eliminar) **y** `apple-design` (manejo directo 1:1, interrumpibilidad, momentum/rubber-banding en drags) — las dos, no una sola (constitution F.26-bis).
 10. **Las acciones destructivas piden confirmación** y describen la consecuencia concreta ("se borrarán 42 fotos"), no una genérica.
 
 ## Contenido

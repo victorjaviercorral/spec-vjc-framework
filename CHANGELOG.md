@@ -4,7 +4,7 @@ Versionado semántico: MAYOR = cambio incompatible de la constitution · MENOR =
 
 ## [1.1.0] — 2026-07-27
 
-Capa de documentación y uso. No cambia la constitution ni el comportamiento de ningún comando.
+Capa de documentación y uso, más la fusión de una retro paralela (ver nota de fusión al final de esta entrada).
 
 ### Guías
 - `docs/guia-usuario.md` reescrita como **referencia completa**: qué es y para quién, modelo en un minuto, prompt de arranque, referencia de los 14 comandos, preguntas frecuentes y límites conocidos declarados.
@@ -29,11 +29,17 @@ Capa de documentación y uso. No cambia la constitution ni el comportamiento de 
 - `templates/prompt-arranque.md`: prompt **común a cualquier proyecto** con parte fija invariable y bloque de datos parametrizable. Incluye variante corta para Boceto·X0 y prompt de continuación entre sesiones.
 - Incorpora la instrucción de discrepar si la etapa propuesta no encaja con lo descrito, y de parar tras cada comando en lugar de encadenar la ruta entera.
 
+### Fusión con retro paralela [0.1.1]
+Mientras esta reescritura estaba en curso, una sesión paralela ejecutó una retro sobre la v0.1 (ver entrada `[0.1.1]` más abajo, conservada como registro histórico) tras pilotar `/spec-init` en LegoVirtualMuseum. Su hallazgo — combinar siempre `emil-design-eng` y `apple-design` para motion, nunca una sola — es real y está trazado a evidencia, así que se incorporó a esta versión en su ubicación correspondiente en vez de descartarse:
+- **constitution.md**: nuevo principio `F.26-bis` (bloque F, junto a identidad visual).
+- **commands/prototype.md**: paso 0.4 activa ambas skills cuando el prototipo tiene animación o gestos reales.
+- **checklists/uxui.md**: ítem 9 (microinteracciones) verifica contra ambas skills cuando aplica.
+
 ---
 
 ## [1.0.0] — 2026-07-27
 
-Reescritura completa. Origen: auditoría técnica documentada en `docs/evolucion-v0.2.md`, que identificó 32 hallazgos y 3 fallos estructurales sobre la v0.1.
+Reescritura completa. Origen: auditoría técnica documentada en `docs/auditoria-v0.1.md`, que identificó 32 hallazgos y 3 fallos estructurales sobre la v0.1.
 
 ### Modelo — dos ejes y dos vías
 - **Eje Etapa** (`Boceto` · `Prototipo` · `MVP` · `Producto`) sustituye al tier único, y absorbe el time-boxing: cada etapa lleva presupuesto de tiempo.
@@ -82,6 +88,43 @@ Reescritura completa. Origen: auditoría técnica documentada en `docs/evolucion
 - [ ] Evals del framework: proyectos de referencia con artefactos golden para poder afirmar con dato que una versión mejora a la anterior.
 - [ ] Primer módulo reutilizable y primer design system extraídos de un proyecto real.
 - [ ] Integración con Kanvas.
+
+---
+
+## [0.1.1] — 2026-07-27
+
+> **Registro histórico.** Esta entrada corresponde a una sesión paralela sobre la v0.1, cuyo commit divergió de la reescritura `[1.0.0]`/`[1.1.0]` anterior. Su lección es real y ya está incorporada a la v1.1 como `constitution F.26-bis` (ver "Fusión con retro paralela" arriba); las referencias a `constitution D.12` de abajo son las que existían en el momento de este commit y ya no aplican tal cual.
+
+### Retro: piloto LegoVirtualMuseum (constitution E.16, disparo manual)
+
+Durante `/spec-init` de LegoVirtualMuseum se iteraron 4 direcciones visuales completas
+(v1 neubrutalismo, v2 archivo/museo, v3 fusion, v4 sandbox interactivo) usando la skill
+`ui-ux-pro-max` para la direccion inicial y, para v3/v4, dos skills de motion instaladas
+aparte: `emil-design-eng` (pulido de componente: easing propio, performance
+transform/opacity, reduced-motion que atenua en vez de eliminar) y `apple-design`
+(fisicidad: manejo directo 1:1, momentum/proyeccion, rubber-banding, interrumpibilidad).
+
+**Hallazgo:** la v4 (identidad jugable — tokens de diseno arrastrables, vitrina con
+inercia real) fue la mas innovadora de las 4, y goberno bien porque se aplicaron ambas
+skills de motion EN LA MISMA iteracion, no una despues de la otra. Son complementarias:
+Emil resuelve "que tan bien se siente" a nivel de componente; Apple resuelve "que tan
+fisico se siente" a nivel de gesto. Usar solo una deja una mitad del problema sin cubrir.
+
+**Cambio al framework (constitution D.12 + commands/prototype.md + checklists/uxui.md):**
+siempre que un prototipo o design-identity incluya animacion real (no solo hover/fade)
+o gestos (drag, swipe, momentum), activar `emil-design-eng` y `apple-design` juntas,
+nunca una sola.
+
+### Cambios
+- constitution D.12: anadida evidencia y regla de combinar ambas skills de motion.
+- commands/prototype.md: nuevo paso 3, activa ambas skills de motion cuando aplique.
+- checklists/uxui.md: item 7 ahora verifica contra ambas skills cuando hay animacion real.
+
+### Pendiente (actualizado)
+- [x] Piloto con LegoVirtualMuseum y retro posterior — ver arriba. Sigue en curso el
+  resto del pipeline (`/prd-lite` en adelante).
+- [ ] Integracion Kanvas.
+- [ ] Primer design system reutilizable extraido de un proyecto real.
 
 ---
 

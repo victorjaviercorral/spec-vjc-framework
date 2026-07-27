@@ -134,6 +134,9 @@ Objetivo WCAG 2.2 AA en producto de cara a usuario. Se verifica de forma automat
 **F.26 Identidad visual propia por proyecto. [Prototipo+]**
 Cada proyecto define su `design-identity.md`. Prohibido el look genérico por defecto (gradientes violeta, glassmorphism de plantilla, tipografía por defecto). Las skills de diseño se usan como motor; la identidad del proyecto las gobierna, no al revés.
 
+**F.26-bis Motion con dos skills complementarias, nunca una sola. [Prototipo+]**
+Cuando un prototipo o `design-identity.md` incluya animación real (no solo hover/fade) o gestos (drag, swipe, momentum), se activan siempre juntas `emil-design-eng` (pulido de componente: easing propio, rendimiento sobre `transform`/`opacity`, `reduced-motion` que atenúa en vez de eliminar) y `apple-design` (fisicidad: manejo directo 1:1, momentum y proyección, rubber-banding, interrumpibilidad). Son complementarias, no redundantes: Emil resuelve qué tan bien se siente un componente; Apple, qué tan físico se siente un gesto. Usar solo una deja la mitad del problema sin cubrir. Evidencia: retro del piloto LegoVirtualMuseum (2026-07-27) — de 4 direcciones visuales iteradas, la más innovadora combinó ambas skills en la misma iteración, no por separado.
+
 **F.27 Prototipo antes de implementación. [Prototipo+]**
 `/prototype` genera un HTML autocontenido navegable para validar propuesta visual y flujo principal antes de escribir implementación real. Es más barato descartar un HTML que una implementación desplegada.
 
