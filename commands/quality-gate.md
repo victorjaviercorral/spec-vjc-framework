@@ -1,6 +1,6 @@
 ---
-description: Revisión ciega e independiente de un artefacto (prd | spec | plan) mediante el agente quality-reviewer, sin acceso a la conversación ni a la autoevaluación. Una revisión por defecto.
-argument-hint: <prd | spec | plan>
+description: Revisión ciega e independiente de un artefacto (prd | requirements | spec | plan) mediante el agente quality-reviewer, sin acceso a la conversación ni a la autoevaluación. Una revisión por defecto.
+argument-hint: <prd | requirements | spec | plan>
 ---
 
 # /quality-gate
@@ -11,6 +11,7 @@ Ejecuta UNA revisión ciega del artefacto indicado. Rondas adicionales SOLO si e
 - El artefacto debe existir y no estar vacío.
 - Lee `docs/00-proyecto/project.md` para conocer etapa y exposición: determinan el umbral aplicable.
 - Si la etapa es Boceto o Prototipo y el usuario no lo ha pedido explícitamente, recuérdale que este gate no es obligatorio (constitution C.15) y pide confirmación antes de gastar el tiempo.
+- `requirements` **no tiene gate obligatorio** en ninguna etapa: se revisa dentro del gate de la spec. Si el usuario lo pide de forma explícita, ejecútalo con su rúbrica; si no, no lo ofrezcas (constitution C.15 y B.5).
 
 ## Protocolo
 1. Lanza el agente `quality-reviewer` (Task, `subagent_type: quality-reviewer`). Recibe **únicamente**: el contenido del artefacto, la rúbrica que le corresponde y `${CLAUDE_PLUGIN_ROOT}/constitution.md`. Nunca: la conversación previa, tu autoevaluación, versiones anteriores ni el veredicto de gates anteriores.
@@ -21,9 +22,13 @@ Ejecuta UNA revisión ciega del artefacto indicado. Rondas adicionales SOLO si e
 
 ## Rúbricas
 
-**PRD-lite** — D1 problema, usuarios y evidencia (fuentes con fecha, alternativas reales, "por qué ahora" del lado del problema) · D2 hipótesis, asunciones y Go/No-Go (asunción más arriesgada identificada, métricas medibles con instrumentación) · D3 alcance, requisitos críticos y exclusiones (alcance que sirve a la hipótesis, RC sin ambigüedad).
+**PRD-lite** — D1 problema, usuarios y evidencia (fuentes con fecha, alternativas reales con fuente verificada o `[PENDIENTE]`, "por qué ahora" del lado del problema) · D2 hipótesis, asunciones, riesgos y Go/No-Go (asunción más arriesgada identificada, riesgo principal declarado, métricas medibles con instrumentación) · D3 alcance, negocio, requisitos críticos y exclusiones (alcance que sirve a la hipótesis, RC sin ambigüedad; en MVP+ modelo de monetización y economía unitaria presentes, y toda mecánica de cobro que haya que construir reflejada como capacidad o excluida con razón).
 
-**Spec** — D1 trazabilidad (todo requisito con origen y criterio de verificación tipado; **cobertura de RC-XX < 100% ⇒ FAIL automático**) · D2 completitud técnica (arquitectura con flujo de datos, modelo de datos, contratos, estados de error) · D3 disciplinas activadas (seguridad, privacidad, accesibilidad, performance, test, operación: aplicadas ítem a ítem según la exposición del proyecto, sin ítems ignorados).
+En MVP y Producto, un dato de competidor **sin fuente y fecha** es hallazgo alto: es la forma más frecuente de que una decisión de negocio se tome sobre memoria del modelo.
+
+**Requirements** (solo a petición explícita) — D1 densidad y cobertura (toda capacidad `C-n` expandida; capacidades de complejidad media con ≥8 requisitos, ≥2 de comportamiento no deseado y ≥1 de estado; sin relleno ubicuo) · D2 disciplina de las lentes (lentes activas correctas para la etapa y exposición declaradas; **toda lente cerrada con su razón escrita** — un cierre silencioso es el defecto grave de este artefacto) · D3 trazabilidad y corte (todo `R-nn` con origen `E-n`/`RC-XX`/`C-n`/`AS-nn`; todo lo fuera de v1 con razón; todo AC citando al menos un `R-nn`).
+
+**Spec** — D1 trazabilidad (todo requisito con origen y criterio de verificación tipado; **cobertura de RC-XX < 100% ⇒ FAIL automático**; toda capacidad `C-n` del alcance v1 con requisito o razón escrita) · D2 completitud técnica (arquitectura con flujo de datos, modelo de datos con estados, contratos, estados de error) · D3 disciplinas activadas (seguridad, privacidad, accesibilidad, performance, test, operación: aplicadas ítem a ítem según la exposición del proyecto, sin ítems ignorados).
 
 **Plan** — D1 fases con definición de hecho verificable y esqueleto desplegado primero · D2 cobertura: todo requisito de la spec asignado a una fase · D3 riesgos y verificación de RC-XX asignada a fase concreta.
 

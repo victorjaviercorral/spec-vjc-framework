@@ -1,15 +1,17 @@
-# Prompt de arranque — Spec VJC Framework
+﻿# Prompt de arranque — Spec VJC Framework
 
 Prompt común a **cualquier** proyecto. La parte fija no se toca; solo se rellena el bloque de datos. Copiar entero en una sesión nueva de Claude Code, abierta en la carpeta del repo del proyecto.
 
-Los campos que no sepas, déjalos como `[PENDIENTE]`: el framework los preguntará. **No los inventes** — el principio A.1 aplica también a ti.
+Los campos que no sepas, déjalos como `[PENDIENTE]`: el framework los resolverá. **No los inventes** — el principio A.1 aplica también a ti.
+
+Cuantos más campos rellenes, menos preguntas gasta el framework de su presupuesto de 8 (principio B.6-bis). Lo que dejes en blanco y sea una **decisión** te lo propondrá marcado como `[ASUMIDO: …]` para que lo confirmes o lo corrijas; lo que sea un **dato** se quedará como `[PENDIENTE]` hasta que lo averigües.
 
 ---
 
 ## Copiar desde aquí
 
 ````markdown
-Vas a arrancar un proyecto bajo el **Spec VJC Framework v1.0**, instalado como plugin en Claude Code.
+Vas a arrancar un proyecto bajo el **Spec VJC Framework v1.2**, instalado como plugin en Claude Code.
 
 ## Antes de nada
 
@@ -63,7 +65,9 @@ material_existente:  # rutas a documentos, PRDs heredados, investigación previa
 
 ## Reglas de esta sesión
 
-- **No inventes.** Lo que falte va como `[PENDIENTE: qué falta y cómo obtenerlo]`.
+- **No inventes un dato.** Un dato, una métrica, una fuente o una obligación legal que falte va como `[PENDIENTE: qué falta y cómo obtenerlo]`. Nunca como asunción.
+- **Sí puedes proponer una decisión** marcada `[ASUMIDO: <decisión> | <razón> | <riesgo si me equivoco>]`, y yo la confirmo o la corrijo. La frontera es si el hueco se resuelve eligiendo o averiguando.
+- **Máximo 8 preguntas en todo el flujo de definición.** Redacta el borrador completo antes de preguntar nada y agrupa las preguntas en un único bloque al final, ordenadas por impacto y con opción por defecto.
 - **Respeta la regla del 20%**: la definición no supera el 20% del presupuesto. Avísame si nos acercamos.
 - **Proporcionalidad (bloque B)**: no produzcas ningún artefacto que mi etapa no exija, aunque "pueda venir bien".
 - **La exposición manda en cumplimiento** aunque la etapa sea baja. Si mi combinación obliga a algo caro, dímelo pronto y plantéame bajar la exposición como alternativa.
@@ -79,7 +83,7 @@ material_existente:  # rutas a documentos, PRDs heredados, investigación previa
 Para algo desechable y privado, el prompt completo es sobre-proceso. Basta con:
 
 ````markdown
-Arranca un proyecto con el **Spec VJC Framework v1.0** (lee `${CLAUDE_PLUGIN_ROOT}/constitution.md` antes).
+Arranca un proyecto con el **Spec VJC Framework v1.2** (lee `${CLAUDE_PLUGIN_ROOT}/constitution.md` antes).
 
 - Nombre: <nombre>
 - Etapa: **boceto** · Exposición: **X0** (privado, solo yo)
@@ -97,7 +101,7 @@ Ejecuta `/spec-init` en modo mínimo: dos preguntas, crea solo `project.md` y a 
 Los proyectos no caben en una sesión. Para retomar:
 
 ````markdown
-Continúo el proyecto <nombre> con el **Spec VJC Framework v1.0**.
+Continúo el proyecto <nombre> con el **Spec VJC Framework v1.2**.
 
 1. Lee `${CLAUDE_PLUGIN_ROOT}/constitution.md`, `docs/00-proyecto/project.md` y el último artefacto producido.
 2. Dime en 3 líneas: dónde estamos, qué queda de presupuesto y cuál es el siguiente comando.

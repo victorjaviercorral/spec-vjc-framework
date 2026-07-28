@@ -1,4 +1,4 @@
-# Guía de usuario — Spec VJC Framework v1.1
+# Guía de usuario — Spec VJC Framework v1.2
 
 Guía de referencia completa. Sirve tanto para quien construyó el framework como para cualquiera que quiera usarlo desde cero.
 
@@ -28,7 +28,7 @@ Eso se consigue con dos ejes independientes. La mayoría de metodologías tienen
 /plugin install spec-vjc-framework@spec-vjc-framework
 ```
 
-Verifica que aparecen los 14 comandos. Quedan disponibles en todos los proyectos: no se copia nada por proyecto.
+Verifica que aparecen los 15 comandos. Quedan disponibles en todos los proyectos: no se copia nada por proyecto.
 
 Skills de diseño recomendadas (opcionales). **Antes de instalar cualquier plugin de terceros**, aplica los ítems 1-3 de `checklists/seguridad-agentica.md`: quién lo publica, cuándo se actualizó y qué instrucciones inyecta.
 
@@ -53,13 +53,15 @@ Skills de diseño recomendadas (opcionales). **Antes de instalar cualquier plugi
 
 ```
 VÍA NÚCLEO
-/spec-init → [/prd-lite] → [/specify +gate] → /prototype → [/plan → /tasks] → /implement → /go-nogo
-                                                                                             │
-VÍA PRODUCCIÓN                                                    ┌──────────────────────────┘
-/go-live → endurecimiento → /preflight → GO LIVE → /go-nogo ──────┘
+/spec-init → [/prd-lite] → [/expand] → [/specify +gate] → /prototype → [/plan → /tasks] → /implement → /go-nogo
+                                                                                                        │
+VÍA PRODUCCIÓN                                                               ┌──────────────────────────┘
+/go-live → endurecimiento → /preflight → GO LIVE → /go-nogo ─────────────────┘
 ```
 
 Lo que va entre corchetes aparece o desaparece según la etapa. Una herramienta personal se construye con dos comandos; un MVP con usuarios recorre el pipeline entero.
+
+**Ocho preguntas para todo el flujo de definición.** El framework no te entrevista: escribe primero, marca lo que ha decidido sin evidencia y te lo presenta para confirmar o corregir en bloque. `/spec-init` dispone de 4 preguntas, `/prd-lite` de 2, `/expand` de 2 y `/specify` de ninguna. Lo que no cabe en ese presupuesto se convierte en asunción marcada, nunca en un turno más de conversación.
 
 Diagramas completos en [diagramas.md](diagramas.md).
 
@@ -70,7 +72,7 @@ Diagramas completos en [diagramas.md](diagramas.md).
 Prompt común a cualquier proyecto: la parte fija no cambia nunca, solo se rellena el bloque de datos. Versión completa, variante corta para bocetos y prompt de continuación entre sesiones en [`templates/prompt-arranque.md`](../templates/prompt-arranque.md).
 
 ````markdown
-Vas a arrancar un proyecto bajo el **Spec VJC Framework v1.0**, instalado como plugin en Claude Code.
+Vas a arrancar un proyecto bajo el **Spec VJC Framework v1.2**, instalado como plugin en Claude Code.
 
 ## Antes de nada
 
@@ -122,7 +124,9 @@ material_existente:
 
 ## Reglas de esta sesión
 
-- **No inventes.** Lo que falte va como `[PENDIENTE: qué falta y cómo obtenerlo]`.
+- **No inventes un dato.** Un dato, una métrica, una fuente o una obligación legal que falte va como `[PENDIENTE: qué falta y cómo obtenerlo]`. Nunca como asunción.
+- **Sí puedes proponer una decisión.** Lo que se resuelve eligiendo y no averiguando: propónlo marcado como `[ASUMIDO: <decisión> | <razón> | <riesgo si me equivoco>]` y lo confirmo o lo corrijo.
+- **Ocho preguntas como máximo en todo el flujo de definición.** Escribe el borrador completo antes de preguntar nada, y agrupa las preguntas en un solo bloque al final, ordenadas por impacto y con opción por defecto.
 - **Regla del 20%**: la definición no supera el 20% del presupuesto. Avísame si nos acercamos.
 - **Proporcionalidad**: no produzcas ningún artefacto que mi etapa no exija.
 - **La exposición manda en cumplimiento** aunque la etapa sea baja. Si obliga a algo caro, plantéame bajar la exposición como alternativa.
@@ -144,6 +148,8 @@ Los dos ejes tienen alcances distintos y guía propia:
 
 Referencia operativa completa: [modelo.md](modelo.md). Principios: [constitution.md](../constitution.md).
 
+De dónde viene cada decisión —EARS, Event Storming, statecharts, sagas, inspecciones de Fagan, appetite de Shape Up, la norma europea aplicable— y qué partes son originales y por tanto están sin red: [fundamentos.md](fundamentos.md). Autoevaluación crítica de la etapa `/expand`, con sus debilidades y predicciones: [validacion-1.2.md](validacion-1.2.md).
+
 ---
 
 ## 6. Referencia de comandos
@@ -153,8 +159,9 @@ Referencia operativa completa: [modelo.md](modelo.md). Principios: [constitution
 | Comando | Qué hace | Etapa mínima |
 |---------|----------|:---:|
 | `/spec-init` | Triaje de dos ejes, presupuesto y estructura documental | Boceto |
-| `/prd-lite` | Entrevista de definición. Modo corto (1 página) o completo | Prototipo |
-| `/specify` | Spec técnica; baja cada `RC-XX` a requisito verificable | MVP |
+| `/prd-lite` | Borrador de definición y confirmación en bloque. Modo corto (1 página) o completo | Prototipo |
+| `/expand` | Expande cada capacidad en requisitos EARS, ciclo de vida y permisos | MVP |
+| `/specify` | Ensambla la spec técnica; baja cada `RC-XX` a requisito verificable | MVP |
 | `/prototype` | HTML autocontenido navegable para validación visual | Prototipo |
 | `/plan` | Fases con definición de hecho; esqueleto desplegado primero | MVP |
 | `/tasks` | Tareas con IDs, dependencias y columna de evidencia | MVP |
@@ -177,9 +184,13 @@ Referencia operativa completa: [modelo.md](modelo.md). Principios: [constitution
 | `/sync-check` | Reconciliación spec ↔ código |
 | `/design-system` | Crea o extiende un design system reutilizable |
 
-### Los cuatro momentos que más importan
+### Los cinco momentos que más importan
 
-**`/specify` y su gate.** Revisa la tabla de trazabilidad. Un requisito crítico que sigue siendo narrativa es el fallo que más caro sale. El gate lo ejecuta un revisor ciego que no ve tu autoevaluación; una revisión por defecto y no se persigue el PASS.
+**`/expand`.** El puente entre "qué construimos" y "qué tiene que hacer exactamente". Convierte cada capacidad del alcance v1 en requisitos EARS aplicando siete lentes —ciclo de vida, permisos rol × estado, validaciones, modos de fallo, fronteras y vacío, concurrencia, auditoría— y ahí es donde aparecen los casos límite que antes se descubrían implementando.
+
+Lo que hay que mirar: que las lentes cerradas **estén declaradas con su razón**. Una lente cerrada en silencio y una lente olvidada se leen igual. Y que una capacidad de complejidad media haya producido ocho requisitos o más, con al menos dos de comportamiento no deseado; si salen tres genéricos, la expansión fue superficial.
+
+**`/specify` y su gate.** Revisa la tabla de trazabilidad. Un requisito crítico que sigue siendo narrativa es el fallo que más caro sale, y una capacidad del alcance v1 sin ningún requisito detrás es hallazgo crítico. El gate lo ejecuta un revisor ciego que no ve tu autoevaluación; una revisión por defecto y no se persigue el PASS.
 
 **`/implement`.** Una tarea por invocación. Termina con la verificación **ejecutada** y su evidencia en `tasks.md`. Sin evidencia se queda en `hecha`, nunca en `verificada`.
 
@@ -201,6 +212,8 @@ Todas las plantillas llevan propiedades YAML (`proyecto`, `tipo`, `etapa`, `expo
 
 Te da **todos los huecos declarados de todos los proyectos** en una búsqueda. Es tu deuda de definición completa.
 
+La segunda más útil es `"[ASUMIDO`: te da todas las decisiones que el framework tomó por ti y que aún no has confirmado. Son dos listas distintas y conviene no mezclarlas — una es lo que no sabes, la otra es lo que alguien decidió sin preguntarte.
+
 Arquitectura recomendada, montaje del vault hub y convenciones en [obsidian.md](obsidian.md). Estructura documental en [vault-structure.md](vault-structure.md).
 
 ---
@@ -215,6 +228,10 @@ Arquitectura recomendada, montaje del vault hub y convenciones en [obsidian.md](
 
 **Ningún artefacto que no cambie una decisión.** La carga de la prueba recae en quien exige el control, no en quien lo omite.
 
+**Ocho preguntas en todo el flujo de definición.** Con contador acumulado en `project.md`. Lo que no cabe se propone como asunción marcada, que tú confirmas o corriges en bloque. Un agente que te interroga durante media hora no está siendo riguroso: te está trasladando su trabajo.
+
+**Un dato jamás se asume; una decisión sí puede proponerse.** La frontera es si el hueco se resuelve eligiendo o averiguando. Un target de conversión inventado no es una asunción de diseño: es un dato falso que contamina el Go/No-Go entero.
+
 **Evidencia, no afirmación.** Código sin verificación ejecutada se considera no escrito.
 
 **Descartar a tiempo es un éxito**, y cuesta quince minutos: nota de aprendizaje, baja de infraestructura, extracción de lo reutilizable a `modules/`, repo archivado. Si hubo usuarios con datos personales, el borrado sí es obligatorio y se documenta, aunque el proyecto muera.
@@ -228,6 +245,20 @@ Arquitectura recomendada, montaje del vault hub y convenciones en [obsidian.md](
 **¿Y si me equivoco de etapa?** Se cambia con `/spec-init --etapa <nueva>`, que obliga a nuevo presupuesto y re-triaje. Equivocarse hacia arriba te ralentiza; hacia abajo te expone. En cumplimiento, ante la duda sube; en definición, baja.
 
 **¿Puedo saltarme el quality gate?** En Boceto y Prototipo no existe. En MVP y Producto es obligatorio sobre la spec, y es donde está buena parte del valor: la revisión ciega existe porque la autoevaluación se infló en 3 de 3 rondas del piloto.
+
+**¿`/expand` no es una etapa más de burocracia?** Es la pregunta correcta, y la respuesta es que sustituye trabajo, no lo añade. Antes, una capacidad del alcance v1 cruzaba a la spec con ratio 1:1 —una línea de PRD, un requisito— porque `/specify` solo tenía obligación de expandir los `RC-XX`. El resto se descubría implementando, que es el sitio más caro. Además **reduce** preguntas: el flujo entero pasó de un número abierto a un máximo de ocho.
+
+**¿Y si mi proyecto no tiene estados ni roles?** Entonces la mitad de las lentes no se activan y `/expand` es corto. Es el comportamiento buscado: el techo de activación existe justo para que una landing sin cuentas no reciba matriz de permisos ni análisis de concurrencia. En Boceto y Prototipo el comando directamente no aplica.
+
+**¿Por qué el PRD me pide modelo de negocio si solo quiero construir?** Porque a partir de MVP construir bien ha dejado de ser lo escaso. Con el coste de generar software desplomado, el modo de fallo dominante ya no es un producto que no funciona: es uno que funciona perfectamente y por el que nadie iba a pagar. La §2b no te pide un plan de negocio, te pide responder a tres cosas —quién paga, por qué, y cuánto te cuesta servirle— y si no tienes respuesta clara, eso ya es el resultado.
+
+**No pretendo ganar dinero con esto. ¿Me salto la sección?** No, pero te cuesta una línea: declarar por qué está bien que no genere ingresos y con qué se sostiene. Es deliberado — el hueco entre "no quiero monetizar" y "no me lo he planteado" es donde vive el producto vanity, y una línea lo cierra.
+
+**¿El framework me hace el análisis de competencia?** Te da un punto de partida, no un hecho consumado. Puede proponer libremente **contra qué categorías** compites, porque eso es un marco. Pero nombres, precios y posicionamiento son datos sobre el mundo: hace una pasada de búsqueda acotada, cada fila con fuente y fecha, y marca la tabla como sin validar hasta que la confirmes. **Si no puede buscar, marca `[PENDIENTE]` en vez de tirar de memoria** — una tabla de competidores verosímil pero inventada es peor que una vacía, porque la vacía te empuja a investigar y la llena cierra la pregunta.
+
+**¿Y por qué los riesgos no llevan probabilidad?** Porque te la inventarías. Un "probabilidad: media" no lo revisa nadie. En su lugar cada riesgo declara la **señal observable** de que se está materializando, que sí se puede vigilar.
+
+**¿Qué diferencia hay entre `[PENDIENTE]` y `[ASUMIDO]`?** `[PENDIENTE]` es un hueco de **dato**: no se rellena nunca, se averigua. `[ASUMIDO]` es una **decisión** que el agente ha tomado por ti y que puedes revertir; lleva su razón, su riesgo y un identificador `AS-nn` para que los requisitos que dependan de ella lo digan. Si te equivocas de categoría, la que hace daño es marcar un dato como asunción.
 
 **¿Qué hago si cambia un requisito a mitad?** `/amend`. Nunca editar a mano un artefacto aprobado: se pierde el análisis de impacto. Orden siempre: spec → tareas → código.
 
@@ -244,6 +275,8 @@ Arquitectura recomendada, montaje del vault hub y convenciones en [obsidian.md](
 Honestidad sobre lo que la versión actual no hace:
 
 - **Enforcement no determinista.** Las precondiciones de cada comando son instrucciones al agente, no controles que bloqueen. El framework incumple parcialmente su propio principio D.16 ("reglas ejecutables, no prosa"), y está escrito así en vez de presentarse como más robusto de lo que es. La capa de hooks es el siguiente salto.
+- **Los techos de `/expand` son juicio, no control.** "¿Esta entidad tiene ≥2 estados?" lo decide el agente. La mitigación —declarar por escrito la razón de cada lente cerrada— hace el juicio **auditable**, no determinista. Es la misma deuda D.16 que el punto anterior, y aplica igual a la regla de densidad: ocho requisitos ubicuos triviales la cumplirían.
+- **`/expand` es la parte menos rodada del framework.** Se publica con las ejecuciones reales declaradas en `docs/validacion-1.2.md`, junto con sus predicciones pre-registradas y las reglas de decisión escritas de antemano sobre qué hacer según el resultado. Léelo antes de confiar en esta etapa para algo caro.
 - **Sin evals del framework.** No hay forma de demostrar con dato que una versión mejora a la anterior; solo el registro de métricas de `project.md` que las alimentará.
 - **Integración con Kanvas diferida.** El formato de `tasks.md` ya es compatible.
 - **Puntos pendientes de smoke test** en la integración con Obsidian: ver [obsidian.md §9](obsidian.md#9-qué-queda-por-verificar).

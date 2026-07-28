@@ -37,6 +37,8 @@ Señales de que has elegido mal:
 | `project.md` | ✅ | ✅ | ✅ | ✅ |
 | `design-identity.md` | — | ✅ | ✅ | ✅ |
 | PRD-lite | — | 🟡 1 página | ✅ completo | ✅ completo |
+| PRD §2b negocio y §5b riesgos | — | — | ✅ | ✅ |
+| `requirements.md` | — | — | ✅ | ✅ |
 | Spec técnica | — | — | ✅ núcleo | ✅ completa |
 | Quality gate ciego | — | — | ✅ spec | ✅ PRD + spec |
 | Prototipo HTML | 🟡 | ✅ | 🟡 si hay UI nueva | 🟡 por feature |
@@ -59,6 +61,8 @@ Señales de que has elegido mal:
 ```
 
 `/spec-init` hace **dos preguntas** (etapa y entorno) y crea solo `docs/00-proyecto/project.md`. No hay PRD, spec, plan, tasks ni gates.
+
+Esas dos son parte del presupuesto de 8 preguntas que gobierna todo el flujo de definición (principio B.6-bis). En Boceto sobran seis, y eso es exactamente lo que debe pasar.
 
 Regla dura única: **secretos en variables de entorno**. Se aplica en toda etapa sin excepción.
 
@@ -99,16 +103,34 @@ Máximo **dos iteraciones** de ajuste visual. Si necesitas más, el problema es 
 ### MVP — el recorrido completo
 
 ```
-/spec-init → /prd-lite → /specify (+gate) → /prototype → /plan → /tasks → /implement × N → /go-nogo
+/spec-init → /prd-lite → /expand → /specify (+gate) → /prototype → /plan → /tasks → /implement × N → /go-nogo
 ```
 
 **`/prd-lite` completo** añade usuarios y *job to be done*, alternativas actuales, evidencia con fuente y fecha, requisitos críticos `RC-XX` y exclusiones.
 
-El bloque que más se nota: **Alcance v1**. Es el contrato de `/specify` y responde a *"¿qué construimos?"*. Sin él, la spec adivina.
+No es una entrevista: escribe **el borrador entero primero** y luego te presenta un solo bloque con sus asunciones marcadas y, como mucho, dos preguntas. Corregir una asunción cuesta menos que responder una pregunta, y el documento existe desde el minuto uno en lugar de irse construyendo turno a turno.
 
-**`/specify`** baja cada `RC-XX` a requisito técnico verificable. Ejemplo de referencia: "anonimato" no puede quedarse en narrativa; baja a *"el backend elimina metadatos EXIF/GPS de toda imagen al subirla, verificable con un test que sube una imagen con GPS y comprueba su ausencia en el archivo servido"*.
+El bloque que más se nota: **Alcance v1**. Es el contrato de `/expand` y responde a *"¿qué construimos?"*. Sin él, todo lo demás adivina.
 
-Revisa sobre todo la **tabla de trazabilidad**. Un `RC-XX` que sigue siendo narrativa es el fallo que más caro sale.
+**En MVP aparecen además dos bloques que en Prototipo no existen**: §2b (propuesta de valor, modelo de negocio, monetización y economía unitaria) y §5b (riesgos del proyecto). Están aquí y no antes porque en Prototipo el modelo de negocio es especulación sobre algo que aún no existe; a partir de MVP deja de serlo.
+
+La §2b no desaparece aunque no pretendas ganar dinero: **se reduce a una línea que te obliga a declarar por qué está bien y con qué se sostiene**. Esa línea es el control barato contra el modo de fallo más caro de esta época — construir algo funcionalmente impecable por lo que nadie iba a pagar. Cuando el coste de construir software se desploma, lo escaso deja de ser la implementación.
+
+La cifra a mirar en §2b es la **economía unitaria**: coste variable por usuario contra ingreso por usuario, contrastada con el coste mensual de `project.md`. Con funcionalidad de IA es lo que más productos mata y lo que menos se revisa.
+
+En §5b los riesgos se declaran con **señal observable**, no con probabilidad. Un porcentaje inventado da falsa precisión y nadie lo revisa; una señal se vigila.
+
+**`/expand`** es la etapa que convierte cada capacidad del alcance v1 en requisitos implementables. Una capacidad es una línea de prosa; un requisito no lo es. Aplica siete lentes de descomposición —ciclo de vida, permisos rol × estado, validaciones, modos de fallo, fronteras y vacío, concurrencia, auditoría— y escribe el resultado en notación EARS.
+
+Lo que hace que no se dispare: **dos techos antes de generar**. El primero decide qué lentes corren según etapa y exposición; el segundo, si esa lente tiene sujeto en esa capacidad concreta. Una landing sin cuentas no recibe matriz de permisos ni concurrencia, y eso no es un ahorro: es que no hay dos actores.
+
+Después viene el corte. La masa generada se clasifica en `v1`, `v2` y descartado contra el presupuesto de la etapa, y solo entonces se escriben las historias de usuario — porque una historia sobre trabajo que no vas a construir es una promesa falsa. Cada criterio de aceptación cita el requisito que hay detrás; uno que no lo cite es un defecto.
+
+Señal de que ha funcionado: una capacidad de complejidad media sale con **ocho requisitos o más**, y entre ellos hay al menos dos de comportamiento no deseado. Esos son los casos límite que antes se descubrían implementando.
+
+**`/specify`** ensambla. Ya no redacta requisitos funcionales: proyecta `requirements.md` y le añade la dimensión técnica —arquitectura, modelo de datos, contratos— más las disciplinas que activa la exposición. También baja cada `RC-XX` a requisito verificable. Ejemplo de referencia: "anonimato" no puede quedarse en narrativa; baja a *"el backend elimina metadatos EXIF/GPS de toda imagen al subirla, verificable con un test que sube una imagen con GPS y comprueba su ausencia en el archivo servido"*.
+
+Revisa sobre todo la **tabla de trazabilidad**. Un `RC-XX` que sigue siendo narrativa es el fallo que más caro sale. Y una capacidad del alcance v1 sin ningún requisito detrás es hallazgo crítico del gate: es el modo de fallo que esta etapa existe para cerrar.
 
 **El gate** lo ejecuta un revisor ciego (agente `quality-reviewer`) que no ve la conversación ni tu autoevaluación. Una revisión por defecto. Umbrales en MVP: media ≥6,5 **y** ninguna dimensión <6,0. El suelo por dimensión existe porque un promedio permite compensar una dimensión floja con otra fuerte, que es exactamente como se cuela un problema.
 
@@ -164,6 +186,8 @@ Bajar de etapa o congelar también son decisiones válidas y se registran igual.
 
 **Regla del 20%.** La definición no supera el 20% del presupuesto: 1,5h en Boceto, un día en Prototipo, cuatro en MVP. Superarlo es señal de sobre-proceso: recorta alcance o sube de etapa conscientemente.
 
+**Ocho preguntas en todo el flujo de definición.** `/spec-init` dispone de 4, `/prd-lite` de 2, `/expand` de 2 y `/specify` de ninguna, con contador acumulado en `project.md`. Lo que no cabe en ese presupuesto no se pregunta: se propone como asunción marcada y tú la confirmas o la corriges. Un agente que te interroga durante media hora no está siendo riguroso, está trasladándote su trabajo.
+
 **Contacto con la realidad cada 5 días.** Si llevas una semana sin producir algo que alguien pueda ver o usar, el trabajo se ha ido a definición o a fontanería.
 
 **El alcance cede antes que el plazo.** Siempre.
@@ -180,6 +204,7 @@ Bajar de etapa o congelar también son decisiones válidas y se registran igual.
 |---------|:---:|-------------|
 | `/spec-init` | Boceto | `project.md`, estructura, clasificación |
 | `/prd-lite` | Prototipo | `prd-lite.md` (corto o completo) |
+| `/expand` | MVP | `requirements.md`: EARS, ciclo de vida, permisos |
 | `/specify` | MVP | `spec.md` + gate |
 | `/prototype` | Prototipo | `prototype.html` navegable |
 | `/plan` | MVP | `plan.md` por fases |

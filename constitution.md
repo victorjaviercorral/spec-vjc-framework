@@ -1,4 +1,4 @@
-# Constitution — Spec VJC Framework v1.0
+# Constitution — Spec VJC Framework v1.2
 
 Principios de obligado cumplimiento para todo proyecto gestionado con este framework y toda sesión de agente. Ningún comando, skill ni preferencia puntual puede contradecirlos. Todo cambio a este documento requiere bump de versión en `.claude-plugin/plugin.json` y entrada en el CHANGELOG.
 
@@ -31,13 +31,26 @@ Los ejes son **independientes**: un Boceto en X2 exige protección de datos aunq
 Si falta un dato, se marca `[PENDIENTE: <qué falta y cómo obtenerlo>]`. Nunca se rellena con un valor plausible. Aplica a métricas, evidencia, requisitos, resultados de tests y estado de tareas.
 
 **A.2 Trazabilidad evidencia → requisito. [MVP+]**
-Todo requisito de la spec referencia su origen (evidencia del PRD, hallazgo, ADR). Los requisitos críticos de valor (RC-XX) NUNCA se expresan solo como narrativa: bajan a requisito técnico verificable. Caso de referencia a no repetir: la limpieza EXIF/GPS diluida en "anonimato" durante el piloto de 2026.
+Todo requisito de la spec referencia su origen: evidencia del PRD (`E-n`), requisito crítico (`RC-XX`), capacidad del alcance v1 (`C-n`), ADR, o la asunción de diseño (`AS-nn`) que lo originó según A.4-bis. Un requisito sin origen no se emite. Los requisitos críticos de valor (RC-XX) NUNCA se expresan solo como narrativa: bajan a requisito técnico verificable. Caso de referencia a no repetir: la limpieza EXIF/GPS diluida en "anonimato" durante el piloto de 2026.
 
 **A.3 Evidencia de verificación, no afirmación de verificación. [siempre]**
 Una tarea o requisito está "hecho" cuando su verificación se ha **ejecutado** y su evidencia (comando y salida, test en verde, captura) queda registrada. Código generado por un agente sin verificación ejecutada se considera no escrito.
 
 **A.4 Texto plano versionable. [siempre]**
 Todos los artefactos son Markdown en el repo del proyecto. `docs/` es el vault documental y la fuente única de verdad de la definición; el código, la de la implementación.
+
+**A.4-bis Asunción de diseño marcada, sí; dato inventado, nunca. [siempre]**
+La prohibición de A.1 es **absoluta para todo lo que se verifica contra el mundo**: un dato, una métrica, una fuente, una cita, un resultado de test o un estado de tarea no se asumen jamás. Se marcan `[PENDIENTE]`. No hay excepción, ni siquiera para agilizar.
+
+Una **decisión de diseño** no evidenciada es de otra naturaleza: no se comprueba contra el mundo, se elige. Puede proponerse marcada como asunción revisable con el formato
+
+```
+[ASUMIDO: <decisión> | <razón> | <riesgo si me equivoco>]
+```
+
+siempre que se cumplan las tres condiciones: (a) queda visible en el artefacto, nunca embebida en silencio; (b) recibe un identificador `AS-nn` citable desde todo requisito que dependa de ella; y (c) se presenta al usuario para confirmar o corregir antes de cerrar el artefacto. Una asunción que incumpla cualquiera de las tres es una invención.
+
+Donde A.1 dice «requisitos», se refiere a inventar **el hecho que los origina** —una métrica, una obligación legal, una necesidad de usuario no observada—, no a proponer la forma técnica de satisfacer un origen que sí existe. Preguntar lo que puede asumirse con riesgo bajo es sobre-proceso; asumir lo que solo se puede saber preguntando o midiendo es inventar. **La frontera es si el hueco se resuelve eligiendo o averiguando.**
 
 ---
 
@@ -50,6 +63,11 @@ Si un documento, sección o control no va a cambiar lo que se construye ni si se
 
 **B.6 Regla del 20%. [siempre]**
 El tiempo total de definición (todo lo anterior a escribir implementación) no supera el 20% del presupuesto de la etapa. Orientativo: Boceto ≈ 1,5 h · Prototipo ≈ 1 día · MVP ≈ 4 días. Superarlo es señal de sobre-proceso: se recorta alcance o se sube de etapa conscientemente, no se estira el plazo en silencio.
+
+**B.6-bis Presupuesto de preguntas: 8 en todo el flujo de definición. [siempre]**
+Fuente única del número; ningún comando lo redefine. `/spec-init`, `/prd-lite`, `/expand` y `/specify` disponen **en conjunto** de un máximo de 8 preguntas al usuario, con contador acumulado en `docs/00-proyecto/project.md`. Reparto por defecto: `/spec-init` 4 · `/prd-lite` 2 · `/expand` 2 · `/specify` 0. Un comando puede ceder cupo a otro; ninguno puede ampliar el total.
+
+Agotado el cupo, lo que quedaría por preguntar **se convierte en asunción marcada** según A.4-bis, o en `[PENDIENTE]` si es un dato. Una tanda de confirmación de un bloque ya redactado no consume cupo: consume cupo la pregunta que el usuario debe responder para que el agente pueda seguir escribiendo.
 
 **B.7 Presupuesto declarado por etapa. [siempre]**
 Toda etapa arranca con un presupuesto de tiempo escrito en `project.md`. Presupuestos por defecto: Boceto ≤ 1 día · Prototipo ≤ 1 semana · MVP ≤ 4 semanas · Producto en ciclos ≤ 4 semanas. Cuando el alcance no cabe en el presupuesto, **se recorta el alcance**; estirar el presupuesto exige decisión explícita registrada.
@@ -68,7 +86,7 @@ Se sube de etapa (Boceto→Prototipo→MVP→Producto) por decisión explícita 
 ## C. Proceso y parada
 
 **C.11 Definición antes que código, proporcional a la etapa. [siempre]**
-No se implementa sin la definición que la etapa exige: Boceto no requiere PRD ni spec; Prototipo requiere PRD-lite de una página; MVP requiere PRD-lite y spec; Producto, además, ADRs de las decisiones estructurales. Ver `docs/modelo.md`.
+No se implementa sin la definición que la etapa exige: Boceto no requiere PRD ni spec; Prototipo requiere PRD-lite de una página; MVP requiere PRD-lite, `requirements.md` y spec; Producto, además, ADRs de las decisiones estructurales. Ver `docs/modelo.md`.
 
 **C.12 Criterios de parada definidos ANTES de abrir cada gate. [MVP+]**
 Por defecto, **una única revisión** por artefacto. Rondas adicionales (máximo 2) solo si el usuario las pide explícitamente. No se persigue el PASS: se aplica el criterio y se avanza o se corrige una vez.

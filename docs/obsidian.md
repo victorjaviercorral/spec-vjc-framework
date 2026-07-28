@@ -89,7 +89,7 @@ Sin plugins de comunidad, lo que permite consultar varios proyectos a la vez son
 ```yaml
 ---
 proyecto: lego-virtual-museum
-tipo: prd | spec | plan | tasks | adr | preflight | decision | comunicacion | proyecto
+tipo: prd | requirements | spec | plan | tasks | adr | preflight | decision | comunicacion | proyecto
 etapa: boceto | prototipo | mvp | producto
 exposicion: X0 | X1 | X2 | X3
 estado: borrador | en-revision | aprobado | obsoleto
@@ -111,6 +111,7 @@ tags: [spec-vjc]
 | Proyectos con datos personales | `["exposicion":"X2"] OR ["exposicion":"X3"]` |
 | Definición aún sin cerrar | `["estado":"borrador"] ["tipo":"spec"]` |
 | Huecos declarados en cualquier proyecto | `"[PENDIENTE"` |
+| Decisiones asumidas sin confirmar aún | `"[ASUMIDO"` |
 
 Esa última es la más valiosa: **una sola búsqueda te da todos los `[PENDIENTE]` de todo el portfolio**, que es exactamente lo que el principio A.1 genera y lo que suele perderse de vista.
 

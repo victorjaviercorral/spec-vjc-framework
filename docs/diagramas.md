@@ -3,7 +3,7 @@
 Representación visual del framework: cómo se relacionan ejes, vías, comandos y artefactos. Los diagramas son Mermaid y renderizan en GitHub, en Obsidian y en la futura documentación pública.
 
 **Índice**
-1. [Mapa general](#1-mapa-general) · 2. [Triaje](#2-triaje-de-clasificación) · 3. [Vía Núcleo](#3-vía-núcleo-por-etapa) · 4. [Vía Producción](#4-vía-producción) · 5. [Comandos y artefactos](#5-comandos--artefactos-qué-lee-y-escribe-cada-uno) · 6. [Ciclo de una tarea](#6-ciclo-de-vida-de-una-tarea) · 7. [Ciclo de un artefacto](#7-ciclo-de-vida-de-un-artefacto) · 8. [Quality gate](#8-quality-gate) · 9. [Bucle de aprendizaje](#9-bucle-de-aprendizaje)
+1. [Mapa general](#1-mapa-general) · 2. [Triaje](#2-triaje-de-clasificación) · 3. [Vía Núcleo](#3-vía-núcleo-por-etapa) · 4. [Vía Producción](#4-vía-producción) · 5. [Comandos y artefactos](#5-comandos--artefactos-qué-lee-y-escribe-cada-uno) · 6. [Ciclo de una tarea](#6-ciclo-de-vida-de-una-tarea) · 7. [Ciclo de un artefacto](#7-ciclo-de-vida-de-un-artefacto) · 8. [Quality gate](#8-quality-gate) · 9. [Bucle de aprendizaje](#9-bucle-de-aprendizaje) · 10. [Expansión de requisitos](#10-expansión-de-requisitos-los-dos-techos)
 
 ---
 
@@ -94,7 +94,7 @@ flowchart LR
 
     subgraph MVP["MVP · ≤4 semanas"]
         direction LR
-        M1["/spec-init"] --> M2["/prd-lite"] --> M3["/specify"] --> M3G{"gate"} --> M4["/prototype"] --> M5["/plan"] --> M6["/tasks"] --> M7["/implement<br/><i>× N tareas</i>"] --> M8["/go-nogo"]
+        M1["/spec-init"] --> M2["/prd-lite"] --> M2E["/expand"] --> M3["/specify"] --> M3G{"gate"} --> M4["/prototype"] --> M5["/plan"] --> M6["/tasks"] --> M7["/implement<br/><i>× N tareas</i>"] --> M8["/go-nogo"]
     end
 
     BOC -.->|"sube de etapa"| PRO
@@ -168,9 +168,15 @@ flowchart LR
     PJ -.-> PL["/prd-lite"]
     PL ==> PRD["prd-lite.md"]
 
-    PRD -.-> SP["/specify"]
+    PRD -.-> EX["/expand"]
+    EX ==> REQ["requirements.md"]
+
+    REQ -.-> SP["/specify"]
+    PRD -.-> SP
     DI -.-> SP
     CHK[("checklists/")] -.-> SP
+    MOD[("modules/")] -.-> EX
+    MOD -.-> SP
     SP ==> SPEC["spec.md"]
     SP ==> ADR["ADR-XXX.md"]
 
@@ -209,11 +215,13 @@ flowchart LR
     GN ==> DEC["decision-continuidad.md"]
     GN ==> ADR
 
-    CONST -.-> SI & PL & SP & PN & IM & GL & PF & GN
+    CONST -.-> SI & PL & EX & SP & PN & IM & GL & PF & GN
 
     classDef art fill:#1e3a5f,stroke:#3b82f6,color:#fff
-    class PJ,DI,PRD,SPEC,ADR,GATE,HTML,PLAN,TASKS,CODE,EV,END,PFR,DEC art
+    class PJ,DI,PRD,REQ,SPEC,ADR,GATE,HTML,PLAN,TASKS,CODE,EV,END,PFR,DEC art
 ```
+
+`/amend` y `/sync-check` operan sobre los `R-nn`, que nacen en `requirements.md` y se proyectan a `spec.md` **sin renumerar**. Es la razón de que `/expand` asigne los IDs definitivos en lugar de una numeración propia: una tabla de mapeo entre dos numeraciones sería una cosa más que mantener sincronizada, y por tanto una cosa más que puede divergir.
 
 ---
 
@@ -343,3 +351,59 @@ flowchart LR
 ```
 
 > Un proyecto descartado que deja un activo reutilizable no fue tiempo perdido. Es el motivo por el que el cierre de `/go-nogo` incluye extraer lo reutilizable **antes** de archivar.
+
+---
+
+## 10. Expansión de requisitos: los dos techos
+
+Cómo `/expand` convierte una capacidad de una línea en requisitos implementables sin sobredisparar. Lo que impide la sobreingeniería no es el filtro del final: son los **dos techos que van antes del generador**.
+
+```mermaid
+flowchart TD
+    CAP["Capacidad C-n<br/>del alcance v1"] --> ES["Event Storming ligero<br/>eventos · comandos<br/>políticas · agregados"]
+
+    ES --> T1{"TECHO 1<br/>¿activa el eje<br/>esta lente?"}
+
+    ET["Eje ETAPA<br/>gobierna definición"] -.-> T1
+    EX["Eje EXPOSICIÓN<br/>gobierna cumplimiento"] -.-> T1
+
+    T1 -->|no| CE1["Cerrada con razón<br/><i>declarada, no omitida</i>"]
+    T1 -->|sí| T2{"TECHO 2<br/>¿tiene sujeto<br/>en esta capacidad?"}
+
+    T2 -->|no| CE2["Cerrada con razón<br/><i>declarada, no omitida</i>"]
+    T2 -->|sí| GEN["Generador<br/>6 plantillas EARS"]
+
+    GEN --> DENS{"¿Densidad<br/>suficiente?"}
+    DENS -->|"&lt;8 req · &lt;2 no deseada<br/>&lt;1 de estado"| REDO["Re-ejecutar L4 y L5<br/><i>prohibido rellenar</i>"]
+    REDO --> GEN
+    DENS -->|sí| CORTE["FILTRO<br/>clasificación + presupuesto B.7"]
+
+    CORTE --> V1["v1 → spec"]
+    CORTE --> V2["v2 → diferido<br/>con razón"]
+    CORTE --> DESC["descartado<br/>con razón"]
+
+    V1 --> HU["Historias de usuario<br/><i>solo ahora, nunca antes</i>"]
+    HU --> AC["Cada AC cita su R-nn<br/><i>sin cita = defecto</i>"]
+
+    classDef techo fill:#78350f,stroke:#f59e0b,color:#fff
+    classDef cerrado fill:#1f2937,stroke:#4b5563,color:#fff
+    classDef ok fill:#065f46,stroke:#10b981,color:#fff
+    class T1,T2 techo
+    class CE1,CE2 cerrado
+    class V1,AC ok
+```
+
+**Por qué dos techos y no un filtro.** Un generador sin límite con un filtro detrás produce masa que hay que descartar, y el descarte es trabajo. El techo 1 decide qué lentes tienen sentido en este proyecto; el techo 2, si esa lente tiene sujeto en esta capacidad concreta. Solo lo que pasa ambos llega al generador, y solo entonces el corte arbitra lo que cabe en el presupuesto.
+
+**Por qué el cierre se declara por escrito.** Una lente cerrada en silencio y una lente olvidada son indistinguibles al leer el artefacto. Con la razón escrita, el gate puede juzgar si el techo se aplicó bien; sin ella, el mecanismo entero deja de ser auditable. Es el mismo motivo por el que un ítem de checklist se marca `N/A` con razón en lugar de borrarse.
+
+**Reparto de las siete lentes entre los dos ejes** (`modelo.md` §3.4):
+
+| Gobierna ETAPA · el dominio | Gobierna EXPOSICIÓN · la obligación |
+|-----------------------------|-------------------------------------|
+| L1 ciclo de vida de la entidad | L2 permisos rol × estado |
+| L3 validaciones y límites | L6 concurrencia |
+| L4 modos de fallo | L7 auditoría y su mitad negativa |
+| L5 fronteras y vacío | |
+
+No es una convención del comando: es la aplicación directa de `modelo.md` §6 — *exposición gana a etapa en cumplimiento, etapa gana a exposición en definición*.

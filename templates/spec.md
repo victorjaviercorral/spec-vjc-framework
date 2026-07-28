@@ -11,10 +11,11 @@ tags: [spec-vjc]
 
 # Spec — <Proyecto>
 
-**Basada en:** PRD-lite v<X> · **Etapa:** <mvp | producto> · **Exposición:** <X0-X3>
+**Basada en:** PRD-lite v<X> · `requirements.md` v<X> · **Etapa:** <mvp | producto> · **Exposición:** <X0-X3>
 **Fecha:** <YYYY-MM-DD> · **Versión:** 0.1
 
 > Secciones 1-5, 11 y 12: núcleo, siempre. Secciones 6-10 y 13: se activan por exposición (`docs/modelo.md` §3.2). Las no activadas se omiten, no se dejan vacías.
+> Los requisitos funcionales **no se redactan aquí**: se proyectan de `requirements.md` con su `R-nn` intacto. Solo entran los clasificados `v1`.
 
 ## 1. Contexto y arquitectura
 **Stack elegido:** <con referencia al ADR que lo decide>
@@ -28,11 +29,11 @@ tags: [spec-vjc]
 **Límites de confianza:** <dónde entra dato no confiable, dónde se cruza de cliente a servidor, qué terceros participan>
 
 ## 2. Trazabilidad
-| Req ID | Requisito | Origen (PRD §/RC-XX/ADR) | Criterio de verificación | Tipo |
-|--------|-----------|--------------------------|--------------------------|:---:|
-| R-01 | | | | test-auto / manual / inspección |
+| Req ID | Requisito | Capacidad | Origen (E-n/RC-XX/C-n/AS-nn/ADR) | Criterio de verificación | Tipo |
+|--------|-----------|:---:|----------------------------------|--------------------------|:---:|
+| R-01 | | C-n | | | test-auto / manual / inspección |
 
-<Todo RC-XX del PRD aparece aquí como requisito técnico verificable. Cobertura < 100% = FAIL de gate.>
+<IDs proyectados de `requirements.md` sin renumerar. Doble cobertura, ambas de gate: todo RC-XX del PRD aparece aquí como requisito técnico verificable (cobertura < 100% = FAIL), y toda capacidad C-n del alcance v1 tiene al menos un requisito que la realiza o una razón escrita de por qué quedó fuera.>
 
 ## 3. Modelo de datos
 Entidades, campos con tipo, relaciones e índices previstos. Cada campo clasificado.
@@ -41,11 +42,20 @@ Entidades, campos con tipo, relaciones e índices previstos. Cada campo clasific
 |---------|-------|------|:---:|-------|
 | | | | público / personal / categoría especial | |
 
+### 3b. Estados de las entidades
+Proyección de `requirements.md` §2. Una entidad de estado único se declara en una línea.
+
+| Entidad | Estados | Cómo se persiste | Transiciones (req) |
+|---------|---------|------------------|--------------------|
+| | | <columna, tabla de eventos, etc.> | R-nn |
+
 ## 4. Contratos de API / interfaz
 Por operación: método y ruta, autenticación y autorización requeridas, límite de tasa, input, output, y **todo estado de error con su comportamiento definido**.
 
 | Operación | Auth | Rate limit | Input | Output | Errores → comportamiento |
 |-----------|:---:|:---:|-------|--------|--------------------------|
+
+<La columna Auth referencia la matriz rol × estado de `requirements.md` §3 cuando la autorización dependa del estado del recurso, no solo del rol. Un endpoint cuya autorización cambia con el estado y que aquí lleve un valor escalar está mal especificado.>
 
 ## 5. Seguridad y privacidad
 **Checklist de seguridad** aplicada ítem a ítem (aplicable → Req ID · N/A → razón).
@@ -82,10 +92,10 @@ Entornos · despliegue · reversión · seguimiento de errores y alertas · logs
 <Sin esta sección, la fecha de revisión llega sin datos y la decisión se toma por intuición.>
 
 ## 11. Flujos de usuario
-Camino principal y alternativos, referenciando las pantallas de `design-identity.md`. Criterios en formato Given/When/Then, convertibles 1:1 a tests.
+Camino principal y alternativos, referenciando las pantallas de `design-identity.md`. Criterios en formato Given/When/Then, convertibles 1:1 a tests. Reutiliza los criterios de aceptación de `requirements.md` §6 en lugar de reescribirlos; cada uno conserva su referencia a `R-nn`.
 
 ## 12. Fuera de alcance
-<Hereda y amplía las exclusiones del PRD-lite.>
+<Hereda y amplía las exclusiones del PRD-lite. Los requisitos clasificados `v2` o descartados en `requirements.md` §5 se referencian aquí por ID, no se repiten.>
 
 ## 13. Módulo de cumplimiento [X3]
 <Pagos · menores · IA · categoría especial. Ítems del módulo activado, cada uno como requisito con ID.>

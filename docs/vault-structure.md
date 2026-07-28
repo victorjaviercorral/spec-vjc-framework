@@ -12,6 +12,7 @@ docs/
 ├── 01-prd/
 │   └── prd-lite.md
 ├── 02-spec/
+│   ├── requirements.md        # Requisitos EARS por capacidad, ciclo de vida y permisos (/expand)
 │   ├── spec.md
 │   └── gates/                 # Copias de cada quality gate, para histórico comparable
 ├── 03-diseno/

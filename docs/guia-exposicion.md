@@ -20,7 +20,9 @@ Este eje es **independiente de la [Etapa](guia-etapa.md)**. No mide lo ambicioso
 
 **Los niveles acumulan:** X3 incluye todo lo de X2, que incluye todo lo de X1.
 
-### Las cinco preguntas del triaje
+### Las cinco señales del triaje
+
+`/spec-init` las pregunta **en un solo bloque**, no una a una: son una pregunta de las cuatro de su cupo (constitution B.6-bis).
 
 1. ¿Lo va a ver alguien más que tú? ¿Se despliega en internet? → **X1**
 2. ¿Alguien dejará datos personales: cuenta, email, contenido subido, analítica identificable? → **X2**
@@ -54,6 +56,20 @@ Este eje es **independiente de la [Etapa](guia-etapa.md)**. No mide lo ambicioso
 | Textos legales publicados | — | 🟡 aviso de cookies | ✅ privacidad + cookies + términos | ✅ + los del módulo |
 | `/preflight` | — | ✅ | ✅ | ✅ |
 | Módulo de cumplimiento | — | — | — | ✅ |
+
+### Lo que activa la exposición dentro de `/expand`
+
+Además de las checklists, la exposición gobierna **tres de las siete lentes de descomposición** con las que `/expand` genera requisitos. Son las que describen lo que le debes a un tercero, no cómo funciona tu dominio:
+
+| Lente | X0 | X1 | X2 | X3 |
+|-------|:---:|---|:---:|---|
+| **Permisos rol × estado** | — | — | ✅ | ✅ + denegación por defecto |
+| **Concurrencia** | — | 🟡 si hay escritura anónima | ✅ | ✅ |
+| **Auditoría y su mitad negativa** | — | 🟡 solo la mitad negativa | ✅ | ✅ + retención por tipo |
+
+En X0 no hay segundo actor ni tercero al que rendir cuentas: no aplican por construcción. La lente de auditoría tiene una **mitad negativa** que se activa ya en X1: no solo qué se registra, sino **qué no debe registrarse jamás** — contenido del usuario, credenciales, datos de categoría especial. Un registro de auditoría mal delimitado es él mismo una brecha, y es el motivo de que esta mitad no sea una nota al pie sino requisitos con ID.
+
+Las otras cuatro lentes las gobierna la etapa. Tabla completa en [`modelo.md` §3.4](modelo.md).
 
 ### Módulos específicos de X3
 
@@ -143,6 +159,7 @@ Lo que más se olvida y más se nota:
 El salto real de obligaciones. Lo imprescindible:
 
 - **Mapa de datos personales** en la spec: dato → finalidad → base legal → retención → ubicación → encargado. Lo que no esté en el mapa, no se recoge.
+- **Matriz de permisos rol × estado** en `requirements.md`, con cada celda denegada convertida en requisito. Una autorización expresada como un valor por endpoint no sabe decir "un editor puede tocar el borrador pero no lo publicado", y ese es el hueco por el que se cuelan los accesos indebidos.
 - **Borrado que borra de verdad**: cuenta, contenido, almacenamiento de objetos, caché, CDN y menciones en logs. Se **prueba de extremo a extremo** una vez antes de lanzar.
 - **Consentimiento retirable tan fácil como se dio.** Si se da con un clic y solo se retira por email, es un incumplimiento.
 - **Nada no esencial antes del opt-in.** Se verifica mirando las peticiones de red en carga limpia, no leyendo el código.
@@ -191,5 +208,11 @@ Si una métrica no se instrumentó, no se estima: se marca `[SIN DATO]` y se reg
 | `operacion.md` | 18 | X1 mínimo · X2+ completa |
 | `privacidad-gdpr.md` | 20 | X1 parcial · X2+ completa |
 | `testing.md` | 13 | X2+ |
+
+| Lente de `/expand` | Activación |
+|--------------------|:---:|
+| Permisos rol × estado | X2+ |
+| Concurrencia | X1 parcial · X2+ completa |
+| Auditoría y mitad negativa | X1 parcial · X2+ completa |
 
 **Anterior:** [guía del eje Etapa](guia-etapa.md) · **Diagramas:** [flujos y relaciones](diagramas.md)

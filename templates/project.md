@@ -20,6 +20,9 @@ tags: [spec-vjc]
 |-----|-------|---------------|
 | **Etapa** | <boceto \| prototipo \| mvp \| producto> | <una frase> |
 | **Exposición** | <X0 \| X1 \| X2 \| X3> | <una frase> |
+| **Sostenibilidad** | <ninguna \| cubrir costes \| ingresos> | <una frase> |
+
+**Sostenibilidad** no es un tercer eje: es un campo declarado que activa las secciones de negocio del PRD en MVP y Producto. `ninguna` = no pretende ingresos y se asume su coste. `cubrir costes` = debe pagarse a sí mismo. `ingresos` = debe generar margen. Si el valor es `ingresos` y hay cobro directo, la exposición sube a X3 y se activa el módulo de pagos.
 
 **Módulos de cumplimiento activados:** <ninguno \| pagos \| menores \| IA \| categoría especial>
 **Checklists activas:** <según docs/modelo.md §3.2>
@@ -32,6 +35,20 @@ tags: [spec-vjc]
 | Fecha límite | <YYYY-MM-DD> |
 | Presupuesto de definición (20%) | <horas o días> |
 | Coste mensual de infraestructura | <estimado / N-A> · alerta de facturación: <sí/no> |
+
+### Presupuesto de preguntas (constitution B.6-bis)
+
+Máximo **8 preguntas** en todo el flujo de definición. Agotado el cupo, lo pendiente se convierte en asunción marcada `[ASUMIDO: …]` o en `[PENDIENTE]` si es un dato.
+
+| Comando | Cupo | Gastadas | Notas |
+|---------|:---:|:---:|-------|
+| `/spec-init` | 4 | | |
+| `/prd-lite` | 2 | | |
+| `/expand` | 2 | | |
+| `/specify` | 0 | | |
+| **Acumulado** | **8** | | |
+
+<Un comando puede ceder cupo a otro; ninguno puede ampliar el total. Una tanda de confirmación sobre un bloque ya redactado no consume cupo.>
 
 ## Entorno
 
@@ -53,6 +70,7 @@ Umbrales según constitution C.14 para esta etapa y exposición:
 | Artefacto | Gate | Fecha | Veredicto |
 |-----------|:---:|:---:|-----------|
 | PRD-lite | <obligatorio/opcional/N-A> | | |
+| requirements.md | <sin gate propio: se revisa dentro del de la spec> | | |
 | Spec | | | |
 
 ## Hitos
