@@ -19,17 +19,17 @@ Cubre dos añadidos de la versión: la etapa `/expand` y las **secciones de nego
 
 ## 0. Declaración de ejecuciones reales
 
-> **En el momento de publicar esta versión, `/expand` tiene CERO ejecuciones reales.**
+> **`/expand` tiene UNA ejecución real** (LegoVirtualMuseum, 2026-07-29). Las secciones de negocio §2b y §5b tienen **CERO**.
 
-Ni una. No se ha ejecutado sobre ningún proyecto, ni sobre el piloto LegoVirtualMuseum, ni sobre un caso sintético completo. Lo que existe es:
+Al publicar la v1.2 el 2026-07-28 el diseño tenía cero ejecuciones. El 2026-07-29 se ejecutó `/expand` sobre LegoVirtualMuseum (MVP · X2). Resultado y sus reservas en **§8**.
 
-- Un diagnóstico verificado línea a línea contra la v1.1 (ver §1).
-- Un diseño argumentado y contrastado contra el modelo de dos ejes existente.
-- Cero evidencia de que el diseño produzca el output que promete.
+Una ejecución no es validación. La regla de decisión pre-registrada exige **tres** antes de consolidar, y esa primera además llegó **contaminada** (ver §8.4). Lo que se puede afirmar hoy:
 
-Todo lo que sigue sobre calidad esperada es **predicción, no resultado**. La columna «Resultado» de las tablas de §4 está vacía a propósito y se rellena solo con ejecuciones reales.
+- El diagnóstico está verificado línea a línea contra la v1.1 (§1).
+- La prueba de fuego salió **3/3** en una ejecución con reservas metodológicas declaradas.
+- Las secciones de negocio y el protocolo de verificación de competidores (§2b, §5b, P-13 a P-17) **siguen sin una sola ejecución**.
 
-Esto no es humildad retórica: el framework tiene un principio (A.3) que dice que lo no verificado se considera no escrito, y aplicarlo al propio framework significa decir que esta versión es una hipótesis, no una mejora demostrada.
+El framework tiene un principio (A.3) según el cual lo no verificado se considera no escrito. Aplicarlo a sí mismo significa que la v1.2 sigue siendo una hipótesis con una observación a favor, no una mejora demostrada.
 
 ---
 
@@ -140,9 +140,9 @@ Escritas antes de la primera ejecución. **La columna «Resultado» se rellena s
 
 | # | Requisito exigido | Lente que debería producirlo | Plantilla EARS esperada | Predicción | Resultado |
 |:---:|-------------------|:---:|:---:|:---:|:---:|
-| **F-1** | Transición de estado sobre **recurso ya compartido** — el cambio de estado invalida artefactos emitidos antes (enlaces, cachés, notificaciones) | L1 | 6 compleja | Se genera | |
-| **F-2** | Permiso **rol × estado** — un rol puede una acción en un estado y no en otro | L2 | 3 estado | Se genera | |
-| **F-3** | **Fallo parcial en operación multi-recurso** — qué queda a medias, compensación, idempotencia al reintentar | L4 | 5 no deseada | Se genera | |
+| **F-1** | Transición de estado sobre **recurso ya compartido** — el cambio de estado invalida artefactos emitidos antes (enlaces, cachés, notificaciones) | L1 | 6 compleja | Se genera | **SÍ** — R-36 (despublicar revoca índice y el enlace deja de resolver), R-11. Plantilla **2**, no 6: la predicción de forma falló, la de generación acertó |
+| **F-2** | Permiso **rol × estado** — un rol puede una acción en un estado y no en otro | L2 | 3 estado | Se genera | **SÍ, por encima de lo exigido** — matriz §3.1 completa con cada celda denegada citando `R-nn`; R-71, R-63, R-48 |
+| **F-3** | **Fallo parcial en operación multi-recurso** — qué queda a medias, compensación, idempotencia al reintentar | L4 | 5 no deseada | Se genera | **SÍ, cuatro veces** — R-46 (cascada de borrado idempotente sin huérfanos), R-30, R-21, R-40. Plantilla **6** en los dos principales, no 5 |
 
 **Condición de la prueba:** un PRD de MVP · X2 con al menos una capacidad cuya entidad tenga ≥2 estados y ≥2 roles. Sesión limpia. Sin pistas sobre qué se está evaluando.
 
@@ -152,23 +152,23 @@ Escritas antes de la primera ejecución. **La columna «Resultado» se rellena s
 
 | # | Predicción | Umbral | Resultado |
 |:---:|-----------|:---:|:---:|
-| P-1 | Una capacidad de complejidad media produce ≥8 requisitos | ≥8 | |
-| P-2 | De ellos, ≥2 de plantilla 5 (no deseada) | ≥2 | |
-| P-3 | De ellos, ≥1 de plantilla 3 o 6 (estado) | ≥1 | |
-| P-4 | El flujo completo de definición no supera 8 preguntas | ≤8 | |
-| P-5 | Ningún `R-nn` sale sin origen (`E-n`/`RC-XX`/`C-n`/`AS-nn`) | 100% | |
-| P-6 | Ningún AC sale sin citar al menos un `R-nn` | 100% | |
-| P-7 | Toda lente cerrada tiene su razón escrita | 100% | |
-| P-8 | En un proyecto X1 sin cuentas, L2 y L6 quedan cerradas | ambas cerradas | |
-| P-9 | En un proyecto X0, se cierran L2, L6 y L7 | las tres cerradas | |
-| P-10 | El corte deja fuera de v1 algo real, no cero | ≥1 requisito a v2 | |
-| P-11 | Tres ejecuciones sobre el mismo PRD activan el mismo conjunto de lentes | 3/3 iguales | |
-| P-12 | Menos de la mitad de las `AS-nn` acaban corregidas por el usuario | <50% | |
-| P-13 | Todo dato de competidor lleva fuente y fecha, o `[PENDIENTE]` | 100% | |
-| P-14 | Todo precio citado aparece **literalmente** en la URL que lo respalda | 100% | |
-| P-15 | La §2b produce al menos un riesgo que acaba en §5b (típicamente de coste) | ≥1 | |
-| P-16 | Con `sostenibilidad: ninguna`, la §2b ocupa una línea y no más | 1 línea | |
-| P-17 | Toda mecánica de cobro a construir aparece como capacidad `C-n` en §6 | 100% | |
+| P-1 | Una capacidad de complejidad media produce ≥8 requisitos | ≥8 | **CUMPLE** — mínimo real 8 (C6, C7). Pero la tabla de autoverificación trae **3 errores de recuento** de 7 (C3, C4, C7): la densidad se reportó, no se computó |
+| P-2 | De ellos, ≥2 de plantilla 5 (no deseada) | ≥2 | **CUMPLE** — mínimo 3 (C6), máximo 8 (C4) |
+| P-3 | De ellos, ≥1 de plantilla 3 o 6 (estado) | ≥1 | **CUMPLE ANTES DEL CORTE, FALLA DESPUÉS** — en C1 y C5 el único (R-22, R-56) se difiere a v2. Ver hallazgo §8.2 |
+| P-4 | El flujo completo de definición no supera 8 preguntas | ≤8 | **NO EVALUABLE** — el PRD se produjo bajo v1.1, antes de B.6-bis. `/expand` consumió **0 de 2** |
+| P-5 | Ningún `R-nn` sale sin origen (`E-n`/`RC-XX`/`C-n`/`AS-nn`) | 100% | **FALLA — 5 de 72.** R-25, R-32, R-42, R-61 declaran `X2, L<n>`; R-16 declara `checklist uxui §3`. Ver hallazgo §8.3 |
+| P-6 | Ningún AC sale sin citar al menos un `R-nn` | 100% | **CUMPLE** — 21 de 21 AC con requisito |
+| P-7 | Toda lente cerrada tiene su razón escrita | 100% | **CUMPLE** — 10 cierres, razones específicas, ninguna genérica |
+| P-8 | En un proyecto X1 sin cuentas, L2 y L6 quedan cerradas | ambas cerradas | no evaluable (X2) |
+| P-9 | En un proyecto X0, se cierran L2, L6 y L7 | las tres cerradas | no evaluable (X2) |
+| P-10 | El corte deja fuera de v1 algo real, no cero | ≥1 requisito a v2 | **CUMPLE AL MÍNIMO** — 3 a v2 (4%), 0 descartados. Razones específicas y defendibles, pero el filtro apenas muerde |
+| P-11 | Tres ejecuciones sobre el mismo PRD activan el mismo conjunto de lentes | 3/3 iguales | pendiente — 1 ejecución |
+| P-12 | Menos de la mitad de las `AS-nn` acaban corregidas por el usuario | <50% | pendiente — 10 `AS-nn` emitidas, sin revisar aún |
+| P-13 | Todo dato de competidor lleva fuente y fecha, o `[PENDIENTE]` | 100% | no ejercitado — PRD anterior a §3 con fuentes |
+| P-14 | Todo precio citado aparece **literalmente** en la URL que lo respalda | 100% | no ejercitado |
+| P-15 | La §2b produce al menos un riesgo que acaba en §5b (típicamente de coste) | ≥1 | no ejercitado — PRD anterior a §2b |
+| P-16 | Con `sostenibilidad: ninguna`, la §2b ocupa una línea y no más | 1 línea | no ejercitado |
+| P-17 | Toda mecánica de cobro a construir aparece como capacidad `C-n` en §6 | 100% | no ejercitado — proyecto sin monetización |
 
 ### 4.3 Contra-predicciones — qué esperaría ver si el diseño está mal
 
@@ -217,14 +217,82 @@ Para que no se lea como más de lo que es:
 
 ---
 
+## 8. Ejecución 1 — LegoVirtualMuseum, 2026-07-29
+
+**Proyecto:** LegoVirtualMuseum · MVP · X2 · **Comando:** `/expand` sobre PRD-lite v0.3 (7 capacidades, todas *must*)
+**Salida:** `docs/02-spec/requirements.md` v0.1 — 72 requisitos, 10 cierres de lente, 10 asunciones, 7 historias con 21 AC.
+
+### 8.1 Veredicto de la prueba de fuego: **3/3**
+
+Los tres requisitos que el Paso 1 declaró estructuralmente imposibles en la v1.1 se generaron **sin que nadie los mencionara**:
+
+- **F-1** — `R-36`: despublicar o cambiar visibilidad revoca la indexación en Explorar **y el enlace público existente deja de resolver contenido**. Transición de estado que invalida un artefacto ya emitido.
+- **F-2** — matriz rol × estado completa (§3.1), con cada celda denegada citando su requisito. Cuatro roles derivados de los actores del Event Storming, no del PRD, que solo declara un segmento primario.
+- **F-3** — `R-46`: cascada de borrado de cuenta idempotente ante reintento tras interrupción parcial, sin recursos huérfanos. Es literalmente el caso que el diagnóstico puso como ejemplo de lo imposible.
+
+**D-04 refutada.** `spec.md` v0.3 tenía R-01 a R-16; `requirements.md` trae 72. Solapamiento **22%**, muy por debajo del 80% que habría obligado a replegar `/expand` dentro de `/specify`.
+
+### 8.2 Hallazgo — la composición se verifica antes del corte, y el corte se la lleva
+
+`commands/expand.md` Paso 4 dice verificar la densidad **antes de cortar**. El agente cumplió al pie de la letra. Consecuencia observada: en **C1** el único requisito de plantilla 3/6 era `R-22` y en **C5** era `R-56`; ambos se difirieron a v2. **Después del corte, C1 y C5 entregan cero requisitos de estado en v1.**
+
+No es fallo del output: es un defecto lógico de la regla, demostrable por lectura y sin necesidad de más ejecuciones. El requisito de estado tiende a ser el más sofisticado y por eso mismo el primer candidato a diferirse.
+
+**Corrección candidata:** verificar la composición **también sobre el conjunto v1**, no solo sobre el bruto. Si el corte deja una capacidad sin requisito de estado, o se reconsidera el corte o se declara por escrito.
+
+### 8.3 Hallazgo — la taxonomía de orígenes de A.2 es incompleta
+
+Cinco requisitos declaran un origen fuera del conjunto válido: `R-25`, `R-32`, `R-42` y `R-61` citan `X2, L<n>`; `R-16` cita `checklist uxui §3`. La **lente no es un origen** —es el generador—, y ni el nivel de exposición ni una checklist figuran en `constitution.md` A.2.
+
+Lectura honesta: el agente hizo lo razonable y la taxonomía es la que se queda corta. Una obligación derivada del nivel de exposición o de una checklist activa **es** procedencia legítima y no tiene casilla.
+
+**Corrección candidata:** ampliar A.2 con `Xn` (obligación de exposición) y `checklist/<nombre> §n` como orígenes válidos.
+
+### 8.4 Reserva metodológica — la ejecución está contaminada
+
+`commands/expand.md` Paso 0 manda leer constitution, modelo, `project.md` y el PRD. **No manda leer `spec.md`.** El agente lo leyó: `AS-01` lo declara explícitamente, y varios cierres citan "spec §5b" y "spec §12, exclusión 10".
+
+Fue la decisión correcta dada la situación retroactiva —renumerar habría invalidado `spec.md`, ADR-008 y el prototipo de 12 pantallas—, pero significa que tenía delante un artefacto que en un flujo normal no existiría. Los 56 requisitos nuevos no están en `spec.md`, así que no es un calco; aun así **es evidencia más débil que una ejecución limpia**.
+
+El propio artefacto hace una concesión que conviene leer entera: dice que los requisitos nuevos "hacen explícito lo que un buen `/plan` habría tenido que decidir de todas formas". Es más honesto que afirmar que eran inalcanzables. **El valor demostrado es moverlos de la implementación a la definición**, no que no pudieran obtenerse nunca. Sigue siendo el valor que el diagnóstico prometía, pero formulado con precisión.
+
+### 8.5 Evidencia a favor de D-02 (la densidad es gameable)
+
+Dos observaciones independientes:
+
+1. **Errores aritméticos en la autoverificación.** Recontando desde los rangos que el propio documento declara: C3 son 11 y dice 10; C4 son 14 y dice 15; C7 son 8 y dice 10. Tres de siete. Ninguna cae bajo el mínimo, así que P-1 se sostiene — pero la densidad **se reportó, no se computó**. Además el cierre presenta `72 / 7 ≈ 10,3:1` como si superara un umbral, confundiendo una media con un mínimo por capacidad.
+2. **Dos requisitos huecos que cuentan para el mínimo.** `R-69` ("si aparece una vitrina no pública en Explorar, tratarlo como defecto bloqueante — nunca debe ocurrir") es una aserción de test, no comportamiento del sistema. `R-05` pide rechazar solicitudes de una capacidad que no existe. Ambos suman a la cuota de plantilla 5 sin especificar nada implementable.
+
+Es exactamente el modo de fallo que D-02 anticipó, en su forma concreta.
+
+### 8.6 Lo que funcionó
+
+- **Techo 2 con criterio real.** Diez cierres por disparador, todos con razón específica. Ejemplo: *"C3 · L5 — no acepta colección, número, fecha ni texto libre: es la selección de un enum cerrado de 3 valores"*. Ninguno genérico. P-7 al 100%.
+- **A.4-bis aplicado con la frontera correcta.** Las 10 `AS-nn` son decisiones (longitudes máximas, comportamiento ante orden inválido, ausencia de ventana de cancelación), nunca datos. La sección de huecos de dato declara que no hay ninguno abierto **y explica dónde viven los `[PENDIENTE]` reales**, en vez de dejarlo en blanco.
+- **`AS-01` es buen juicio, no obediencia.** Detectó la situación retroactiva y eligió no romper las referencias cruzadas existentes, declarándolo como asunción revisable con su coste de reversión.
+- **Cero preguntas** de las 2 disponibles.
+
+### 8.7 Qué se hace, según la regla escrita de antemano
+
+La regla de §5 para 3/3 dice: **mantener tal cual, registrar como primera evidencia y acumular hasta tres ejecuciones antes de tocar nada.** Se respeta.
+
+Con una distinción explícita: esa regla protege contra **sobreajustar a una señal de rendimiento ruidosa**. Los hallazgos §8.2 y §8.3 no son señales de rendimiento — son **inconsistencias lógicas demostrables por lectura**, ciertas con una ejecución o con cien. Quedan registradas como correcciones candidatas y su aplicación es decisión del autor, no consecuencia automática de esta ejecución.
+
+Lo que **no** se toca por ahora: la regla de densidad (D-02 tiene ahora dos observaciones a favor, pero su regla de decisión exige un análisis de supervivencia de requisitos que aún no se ha hecho).
+
+---
+
 ## 7. Estado de este documento
 
 | | |
 |---|---|
 | **Escrito** | 2026-07-28, antes de la primera ejecución |
-| **Ejecuciones reales al publicar** | **0** |
+| **Actualizado** | 2026-07-29, con la ejecución 1 (§8) |
+| **Ejecuciones reales de `/expand`** | **1** (contaminada, ver §8.4) |
+| **Ejecuciones reales de §2b / §5b / búsqueda de competidores** | **0** |
 | **Predicciones pre-registradas** | 17 + 3 de la prueba de fuego |
-| **Columnas de resultado rellenas** | 0 de 20 |
-| **Próxima revisión** | tras la primera ejecución real de `/expand` sobre un proyecto MVP · X2 |
+| **Resueltas** | 11 de 20 · cumplen 8 · falla 1 (P-5) · parcial 1 (P-3) · al mínimo 1 (P-10) |
+| **Pendientes** | 9 — 5 por no ejercitarse, 2 por requerir más ejecuciones, 1 no evaluable, 1 esperando revisión del autor |
+| **Próxima revisión** | tras la ejecución 2, preferiblemente sobre un proyecto **sin spec previa** para eliminar la contaminación de §8.4 |
 
-Mientras las columnas de resultado sigan vacías, la afirmación defendible sobre la v1.2 es exactamente esta: **cierra un hueco estructural diagnosticado con precisión, mediante un diseño coherente con el modelo existente y todavía sin verificar.** Cualquier formulación más fuerte que esa es marketing.
+Con una ejecución sobre la mesa, la afirmación defendible sobre la v1.2 pasa a ser esta: **la prueba de fuego se superó 3/3 en un caso real, con dos defectos lógicos de diseño encontrados en el proceso y una reserva metodológica declarada.** No es "el diseño funciona": es "el diseño produjo lo que prometía una vez, en condiciones imperfectas, y el intento reveló dónde está mal escrito". Cualquier formulación más fuerte sigue siendo marketing.
