@@ -1,0 +1,3 @@
+# Scripts de shell (sin extension, shebang #!/bin/sh) rompen si autocrlf los
+# convierte a CRLF en checkout. Forzar LF siempre, en cualquier plataforma.
+scripts/git-hooks/* text eol=lf

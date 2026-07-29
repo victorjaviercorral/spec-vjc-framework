@@ -63,6 +63,8 @@ Los 36 principios completos —más las tres precisiones `-bis` y una `-ter`—,
 /plugin install spec-vjc-framework@spec-vjc-framework
 ```
 
+**Desarrollo del propio framework:** si vas a editar este repo, evita el clon+caché intermedios por completo lanzando la sesión con `claude --plugin-dir <ruta-a-este-repo>` — así `${CLAUDE_PLUGIN_ROOT}` apunta siempre a tu working copy y no hay nada que sincronizar. Si en cambio lo cargas por marketplace, **tras cada `git push` que cambie de versión** hace falta `/plugin marketplace update spec-vjc-framework` seguido de `/plugin update spec-vjc-framework` — ninguno de los dos ocurre solo dentro de una sesión activa. `scripts/check-plugin-version.ps1` (instalado como hook `pre-push`, ver CHANGELOG 1.3.1) impide publicar una versión donde `plugin.json`, `marketplace.json` y `CHANGELOG.md` no coincidan, pero no sustituye el paso manual de sincronizar el clon local.
+
 ## Documentación
 
 | | |
@@ -78,14 +80,14 @@ Los 36 principios completos —más las tres precisiones `-bis` y una `-ter`—,
 | [`docs/modelo.md`](docs/modelo.md) | Matriz de activación: qué se aplica y cuándo |
 | [`docs/vault-structure.md`](docs/vault-structure.md) | Estructura documental del proyecto |
 | `commands/` · `agents/` | 15 comandos y el revisor ciego |
-| `scripts/` | Controles ejecutables. `check-requirements.ps1` verifica `requirements.md` con código de salida |
+| `scripts/` | Controles ejecutables. `check-requirements.ps1` verifica `requirements.md`; `check-plugin-version.ps1` verifica que `plugin.json`/`marketplace.json`/`CHANGELOG.md` no diverjan — ambos con código de salida |
 | `checklists/` | Seguridad, seguridad agéntica, privacidad/GDPR, accesibilidad, performance, testing, operación, UX/UI, contenido/SEO |
 | `templates/` | Plantillas de todos los artefactos |
 | `design-systems/` · `modules/` | Activos reutilizables entre proyectos |
 
 ## Estado
 
-v1.3. Ver [CHANGELOG](CHANGELOG.md). La etapa `/expand` es lo más reciente y lo menos rodado: sus ejecuciones reales, debilidades y predicciones están declaradas en [`docs/validacion-1.2.md`](docs/validacion-1.2.md). El flujo de dos capas de `/design-system` (F.26-ter) es aporte externo declarado sin ejecución propia todavía. Integración con tablero Kanvas diferida; el formato de `tasks.md` ya es compatible.
+v1.3.1. Ver [CHANGELOG](CHANGELOG.md). La etapa `/expand` es lo más reciente y lo menos rodado: sus ejecuciones reales, debilidades y predicciones están declaradas en [`docs/validacion-1.2.md`](docs/validacion-1.2.md). El flujo de dos capas de `/design-system` (F.26-ter) es aporte externo declarado sin ejecución propia todavía. Integración con tablero Kanvas diferida; el formato de `tasks.md` ya es compatible.
 
 ## Licencia
 

@@ -2,6 +2,26 @@
 
 Versionado semántico: MAYOR = cambio incompatible de la constitution · MENOR = comandos o checklists nuevos · PARCHE = correcciones.
 
+## [1.3.1] — 2026-07-30
+
+Corrección de un defecto que el propio commit de v1.3.0 introdujo, y control ejecutable nuevo para que la clase de error no vuelva a ocurrir en silencio.
+
+### El defecto
+
+El commit de v1.3.0 subió `CHANGELOG.md` y `README.md` a "v1.3" pero **no tocó el campo `version` de `.claude-plugin/plugin.json` ni de `.claude-plugin/marketplace.json`**, que seguían en `1.2.1`. Ese campo es el único disparador de que Claude Code regenere la caché instalada del plugin (`~/.claude/plugins/cache/<marketplace>/<plugin>/<version>/`, de donde resuelve `${CLAUDE_PLUGIN_ROOT}` en cada sesión). Sin subirlo, `origin/main` queda al día pero cualquier sesión que cargue el plugin vía marketplace sigue ejecutando la versión vieja **indefinidamente y sin ningún aviso** — exactamente el patrón de repos desactualizados que ya se había sufrido antes.
+
+Se descubrió al auditar por qué una copia instalada localmente (`~/.claude/plugins/marketplaces/spec-vjc-framework`) seguía en `71c1a34` / v1.2.0, tres commits por detrás de `origin/main`, con además cambios sin comitear de una sesión anterior (`design-systems/brick-sandbox/` y una edición de `CHANGELOG.md`) que nunca deberían haberse escrito en esa copia — el activo pertenece al repo de trabajo, nunca al clon que usa el plugin manager.
+
+### Control ejecutable nuevo
+
+- **`scripts/check-plugin-version.ps1`** (nuevo, UTF-8 con BOM — constitution D.20). Verifica que `plugin.json`, `marketplace.json` y la cabecera más reciente de `CHANGELOG.md` declaren la misma versión. Código de salida 0/1, mismo patrón que `check-requirements.ps1`.
+- **`scripts/git-hooks/pre-push`** (nuevo). Ejecuta el control anterior antes de cada `git push` y lo bloquea si hay desajuste. Se instala a mano una vez (`git` no versiona `.git/hooks/`): `cp scripts/git-hooks/pre-push .git/hooks/pre-push`.
+- Efecto: el error de este mismo release — olvidar subir `version` en `plugin.json` — pasa de depender de la memoria del autor a ser estructuralmente imposible de publicar sin corregirlo primero.
+
+### Lo que sigue siendo manual, y por qué
+
+El hook impide publicar una versión desincronizada, pero no sincroniza automáticamente el clon de `~/.claude/plugins/marketplaces/` ni la caché instalada — eso requiere `/plugin marketplace update spec-vjc-framework` y `/plugin update spec-vjc-framework` desde una sesión de Claude Code, que son comandos interactivos sin equivalente de script. Para desarrollo en solitario, la alternativa más robusta es lanzar la sesión con `claude --plugin-dir <ruta-al-repo-de-trabajo>`: elimina el clon y la caché intermedios por completo, así que no hay nada que pueda desincronizarse.
+
 ## [1.3.0] — 2026-07-29
 
 Rediseño de `/design-system` a partir de dos referencias externas aportadas por el autor: **Kevin** (@kvnkld), *"The 10 rules to ship truly polished UI with Claude"* (X, 16 jun 2026), y **Borja Pérez / Helmcode**, *"Creando un sistema de diseño sin tocar Figma"* (LinkedIn, 10 jul 2026) — que a su vez cita al primero como su punto de partida. Motivo: el resultado de diseño de la única ejecución real del framework (LegoVirtualMuseum) se juzgó por debajo del nivel esperado, y el diagnóstico fue que el comando producía especificación en prosa sin ninguna prueba visual renderizada que la contrastara. Detalle de qué se adopta y qué no en `docs/fundamentos.md` §8.

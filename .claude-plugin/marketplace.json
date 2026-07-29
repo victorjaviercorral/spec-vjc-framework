@@ -10,7 +10,7 @@
       "name": "spec-vjc-framework",
       "source": "./",
       "description": "Framework de desarrollo dirigido por especificación con dos ejes (Etapa · Exposición) y dos vías (Núcleo · Producción). Pipeline: /spec-init > /prd-lite > /expand > /specify > /prototype > /plan > /tasks > /implement, más /go-live > /preflight > /go-nogo al productivizar.",
-      "version": "1.2.1",
+      "version": "1.3.1",
       "license": "MIT",
       "author": {
         "name": "Victor Javier Corral Franco",

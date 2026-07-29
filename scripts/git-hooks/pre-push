@@ -1,0 +1,36 @@
+#!/bin/sh
+# pre-push — bloquea el push si la version del plugin esta desincronizada.
+#
+# Motivo: el 2026-07-29/30 un commit de v1.3.0 se publico en origin/main sin
+# subir el campo "version" de .claude-plugin/plugin.json ni marketplace.json.
+# Ese campo es el unico que dispara que Claude Code regenere la cache
+# instalada del plugin (~/.claude/plugins/cache/.../<version>/): sin el, un
+# push a GitHub queda "publicado" pero ninguna sesion que cargue el plugin
+# via marketplace ve el cambio, en silencio, indefinidamente. Es la causa
+# raiz del patron de "repos desactualizados" que este hook existe para cerrar.
+#
+# Instalacion (no se instala solo — git no versiona .git/hooks):
+#   cp scripts/git-hooks/pre-push .git/hooks/pre-push
+#   chmod +x .git/hooks/pre-push
+# Re-ejecutar esta copia cada vez que este archivo cambie en el repo.
+
+repo_root=$(git rev-parse --show-toplevel)
+script="$repo_root/scripts/check-plugin-version.ps1"
+
+if [ ! -f "$script" ]; then
+  # El script de control no existe en este commit: nada que verificar.
+  exit 0
+fi
+
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$script"
+status=$?
+
+if [ $status -ne 0 ]; then
+  echo ""
+  echo "pre-push: bloqueado — version de plugin.json/marketplace.json/CHANGELOG.md desincronizada."
+  echo "Corrige los tres antes de publicar, o el plugin instalado via marketplace se queda en la version vieja en silencio."
+  echo "Saltar este control (no recomendado): git push --no-verify"
+  exit 1
+fi
+
+exit 0
