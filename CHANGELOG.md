@@ -20,7 +20,11 @@ Se descubrió al auditar por qué una copia instalada localmente (`~/.claude/plu
 
 ### Lo que sigue siendo manual, y por qué
 
-El hook impide publicar una versión desincronizada, pero no sincroniza automáticamente el clon de `~/.claude/plugins/marketplaces/` ni la caché instalada — eso requiere `/plugin marketplace update spec-vjc-framework` y `/plugin update spec-vjc-framework` desde una sesión de Claude Code, que son comandos interactivos sin equivalente de script. Para desarrollo en solitario, la alternativa más robusta es lanzar la sesión con `claude --plugin-dir <ruta-al-repo-de-trabajo>`: elimina el clon y la caché intermedios por completo, así que no hay nada que pueda desincronizarse.
+El hook impide publicar una versión desincronizada, pero no sincroniza automáticamente el clon de `~/.claude/plugins/marketplaces/` ni la caché instalada — eso requiere `/plugin marketplace update spec-vjc-framework` y `/plugin update spec-vjc-framework` desde una sesión de Claude Code, que son comandos interactivos sin equivalente de script. Documentado en README.md "Instalación", con las dos vías: `--plugin-dir` para desarrollo en solitario (elimina el clon y la caché por completo — no hay nada que pueda desincronizarse) y los dos comandos manuales para cuando el framework se carga vía marketplace, más cómo verificar antes de empezar qué versión está realmente cargada en la sesión (`echo $CLAUDE_PLUGIN_ROOT` + leer su `plugin.json`).
+
+### Limpieza del clon de marketplace
+
+`~/.claude/plugins/marketplaces/spec-vjc-framework/` tenía trabajo sin comitear de una sesión anterior — un `design-systems/brick-sandbox/` completo y una edición de `CHANGELOG.md`, ambos del flujo de `/design-system` anterior a v1.3.0 (sin `brand.md` ni `showcase.html`) — que nunca debió escribirse ahí (constitution F.28: los design systems se comitean en el repo real). Descartado y el clon puesto al día con `origin/main` por fast-forward.
 
 ## [1.3.0] — 2026-07-29
 

@@ -63,7 +63,31 @@ Los 36 principios completos —más las tres precisiones `-bis` y una `-ter`—,
 /plugin install spec-vjc-framework@spec-vjc-framework
 ```
 
-**Desarrollo del propio framework:** si vas a editar este repo, evita el clon+caché intermedios por completo lanzando la sesión con `claude --plugin-dir <ruta-a-este-repo>` — así `${CLAUDE_PLUGIN_ROOT}` apunta siempre a tu working copy y no hay nada que sincronizar. Si en cambio lo cargas por marketplace, **tras cada `git push` que cambie de versión** hace falta `/plugin marketplace update spec-vjc-framework` seguido de `/plugin update spec-vjc-framework` — ninguno de los dos ocurre solo dentro de una sesión activa. `scripts/check-plugin-version.ps1` (instalado como hook `pre-push`, ver CHANGELOG 1.3.1) impide publicar una versión donde `plugin.json`, `marketplace.json` y `CHANGELOG.md` no coincidan, pero no sustituye el paso manual de sincronizar el clon local.
+### Por qué existen dos formas de cargarlo
+
+Instalado vía marketplace, Claude Code mantiene **tres copias independientes** del framework en el disco: el repo real (donde editas y haces `git push`), un clon git en `~/.claude/plugins/marketplaces/spec-vjc-framework/` (fuente de `/plugin install`) y una caché instalada en `~/.claude/plugins/cache/.../<version>/` (de donde resuelve `${CLAUDE_PLUGIN_ROOT}` en cada sesión, la que realmente se ejecuta). Ninguna de las tres se sincroniza sola con las otras. Cada `git push` que no reinstale el plugin dejaba, en la práctica, sesiones ejecutando código viejo sin ningún aviso — causa raíz documentada en CHANGELOG 1.3.1.
+
+**Opción A — desarrollo en solitario (recomendada si trabajas siempre desde tu propia máquina):** arranca la sesión con `claude --plugin-dir <ruta-a-este-repo>` en vez de vía marketplace. Elimina el clon y la caché por completo: `${CLAUDE_PLUGIN_ROOT}` apunta directo a tu working copy, así que no hay nada que pueda desincronizarse. En Windows/PowerShell hay una función lista para esto en el perfil (`$PROFILE`):
+```powershell
+function spec-vjc {
+    & claude --plugin-dir "C:\ruta\a\spec-vjc-framework" @args
+}
+```
+Úsala como `spec-vjc` en vez de `claude` al abrir un proyecto nuevo.
+
+**Opción B — instalado vía marketplace** (necesario si compartes el framework con otra persona o máquina que no tiene acceso al repo local):
+```
+/plugin marketplace add victorjaviercorral/spec-vjc-framework
+/plugin install spec-vjc-framework@spec-vjc-framework
+```
+**Tras cada `git push` que cambie de versión**, en una sesión de Claude Code:
+```
+/plugin marketplace update spec-vjc-framework
+/plugin update spec-vjc-framework
+```
+Ninguno de los dos ocurre solo dentro de una sesión activa — hace falta ejecutarlos, y luego abrir una sesión **nueva** (la ya abierta se queda con el `${CLAUDE_PLUGIN_ROOT}` que resolvió al arrancar). `scripts/check-plugin-version.ps1`, instalado como hook `pre-push` (ver CHANGELOG 1.3.1), impide publicar una versión donde `plugin.json`, `marketplace.json` y `CHANGELOG.md` no coincidan — pero no sustituye estos dos comandos manuales.
+
+**Antes de ejecutar el framework en un proyecto nuevo, verifica qué versión tienes cargada de verdad:** dentro de la sesión, `echo $CLAUDE_PLUGIN_ROOT` (o `$env:CLAUDE_PLUGIN_ROOT` en PowerShell) y lee el `version` de `<esa-ruta>/.claude-plugin/plugin.json`. Si no coincide con el `## [x.y.z]` más reciente de este CHANGELOG, la sesión no está viendo tus últimos cambios.
 
 ## Documentación
 
