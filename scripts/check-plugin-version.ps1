@@ -27,8 +27,26 @@
 #>
 [CmdletBinding()]
 param(
-    [string]$RepoRoot = (Resolve-Path "$PSScriptRoot/..").Path
+    [string]$RepoRoot
 )
+
+if (-not $RepoRoot) {
+    # $PSScriptRoot no resuelve igual segun quien invoque el script (a mano
+    # con & .\script.ps1 vs. powershell.exe -File desde el hook pre-push via
+    # sh): en ese segundo caso puede llegar vacio. git rev-parse es estable
+    # en ambos casos porque el hook ya se ejecuta con cwd en la raiz del repo.
+    try {
+        $RepoRoot = (& git rev-parse --show-toplevel 2>$null).Trim()
+    } catch {
+        $RepoRoot = $null
+    }
+    if (-not $RepoRoot -and $PSScriptRoot) {
+        $RepoRoot = (Resolve-Path "$PSScriptRoot/..").Path
+    }
+    if (-not $RepoRoot) {
+        $RepoRoot = (Get-Location).Path
+    }
+}
 
 $fallos = New-Object System.Collections.Generic.List[string]
 
@@ -73,7 +91,7 @@ if (-not (Test-Path $changelogPath)) {
 if ($verPlugin -and $verMarketplace -and $verChangelog) {
     $unicas = @($verPlugin, $verMarketplace, $verChangelog) | Select-Object -Unique
     if ($unicas.Count -gt 1) {
-        $fallos.Add("Version desincronizada: plugin.json=$verPlugin · marketplace.json=$verMarketplace · CHANGELOG.md=$verChangelog")
+        $fallos.Add("Version desincronizada: plugin.json=$verPlugin, marketplace.json=$verMarketplace, CHANGELOG.md=$verChangelog")
         $fallos.Add("El campo que dispara la cache de Claude Code es plugin.json. Si CHANGELOG.md ya subio de version y plugin.json no, cualquier sesion que cargue el plugin por marketplace seguira ejecutando la version vieja aunque origin/main este al dia.")
     }
 }
