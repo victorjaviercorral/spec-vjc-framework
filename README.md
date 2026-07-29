@@ -78,6 +78,7 @@ Los 36 principios completos —más las tres precisiones `-bis`—, con su condi
 | [`docs/modelo.md`](docs/modelo.md) | Matriz de activación: qué se aplica y cuándo |
 | [`docs/vault-structure.md`](docs/vault-structure.md) | Estructura documental del proyecto |
 | `commands/` · `agents/` | 15 comandos y el revisor ciego |
+| `scripts/` | Controles ejecutables. `check-requirements.ps1` verifica `requirements.md` con código de salida |
 | `checklists/` | Seguridad, seguridad agéntica, privacidad/GDPR, accesibilidad, performance, testing, operación, UX/UI, contenido/SEO |
 | `templates/` | Plantillas de todos los artefactos |
 | `design-systems/` · `modules/` | Activos reutilizables entre proyectos |

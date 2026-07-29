@@ -2,6 +2,40 @@
 
 Versionado semántico: MAYOR = cambio incompatible de la constitution · MENOR = comandos o checklists nuevos · PARCHE = correcciones.
 
+## [1.2.1] — 2026-07-29
+
+Correcciones derivadas de la **primera ejecución real de `/expand`** (LegoVirtualMuseum, MVP · X2). La prueba de fuego salió 3/3 y el intento reveló cinco defectos, todos demostrables por lectura y por tanto corregibles sin esperar más ejecuciones. Detalle, coste y beneficio de cada acción en `docs/validacion-1.2.md` §8.
+
+### Primer control ejecutable del framework
+
+- **`scripts/check-requirements.ps1`** (nuevo). Verifica `requirements.md` de forma determinista: cierres de lente con razón escrita, origen de todo requisito, densidad por capacidad **antes y después del corte**, IDs únicos, clasificación válida, y criterios de aceptación que citan requisitos existentes. Devuelve código de salida 0/1.
+- `/expand` lo **ejecuta y lee el resultado** en lugar de juzgar, y corrige hasta código 0 (constitution A.3 y D.16).
+- Efecto: **seis predicciones de la validación pasan de juicio del agente a comprobación mecánica.** Cierra parcialmente D.16, la deuda más antigua del framework — la auditoría original la señaló como *"el cambio de mayor apalancamiento del framework entero"* (E-01) y llevaba dos versiones declarada sin resolverse.
+- Verificado con dos fixtures: caso limpio con código 0 y caso con 10 defectos plantados, todos detectados. **Todo script `.ps1` del framework se guarda en UTF-8 con BOM**: sin BOM, Windows PowerShell 5.1 lo lee como ANSI y falla el parseo (constitution D.20).
+
+### Correcciones de `/expand`
+
+- **La composición se verifica también sobre el conjunto v1**, no solo en bruto. El piloto cumplía el mínimo de plantilla 3/6 en dos capacidades con requisitos que el corte difirió a v2, dejando v1 sin ningún requisito de estado. El requisito de estado es el más sofisticado de una capacidad y por eso el primer candidato a diferirse.
+- **Escribir el artefacto es parte del comando.** La ejecución del piloto mostró `requirements.md` en conversación y no lo creó en disco: sin fichero no hay artefacto versionable (A.4), nada que proyectar y nada que verificar.
+- **Modo retroactivo explícito.** Si ya existe `spec.md`, leerla es legítimo, conservar su numeración `R-nn` es obligatorio y declararlo por escrito también. Si no existe, no se busca. El piloto leyó la spec sin que el Paso 0 lo mandara — decisión correcta, ambigüedad ahora resuelta.
+- **Todo requisito debe ser implementable y falsable**, con dos antipatrones nombrados y prohibidos: la aserción de test disfrazada ("el sistema deberá tratarlo como defecto bloqueante") y el rechazo de una capacidad inexistente (eso es una exclusión de alcance). Ambos inflan la densidad sin especificar nada; el piloto produjo uno de cada.
+
+### Constitution 1.2.1
+
+- **A.2 amplía la taxonomía de orígenes** a conjunto cerrado y explícito: `E-n` · `RC-XX` · `C-n` · `A-n` · `AS-nn` · `ADR-nnn` · `Xn` (obligación de exposición) · `checklist/<nombre> §n`. Declara además que **una lente de descomposición no es un origen**: es el generador, no la procedencia. Cinco requisitos del piloto quedaban fuera de la lista anterior — el defecto estaba en la taxonomía, no en el output.
+- **A.4-bis gana la regla operativa contra el contrabando.** Un `AS-nn` describe lo que el autor decide, nunca lo que hace el mundo: prohibidas las afirmaciones sobre terceros, mercado o comportamiento de personas no observadas. "Los usuarios prefieren X" no es una asunción, es un dato sin fuente reformulado para pasar el control. Cierra la debilidad D-05, señalada como la que peor envejece en manos de otros usuarios.
+- **D.16 declara qué controles ejecutables existen ya**, en vez de describir la deuda en abstracto.
+
+### Verificación de datos de terceros
+
+- **Cita textual obligatoria**, no solo URL, para todo dato de competidor. Un precio con el enlace a la portada del competidor es formalmente una fuente y materialmente nada — la misma exigencia que el `quality-reviewer` tiene para sus propios hallazgos.
+- Aplicado **por adelantado**: la regla de decisión lo reservaba para si P-14 fallaba, pero cuesta una frase y evita que la primera ejecución real de las secciones de negocio produzca precios sin respaldo.
+- `quality-reviewer` añade tres hallazgos tipificados: dato de tercero sin fuente (alto), asunción que contrabandea un dato (alto), requisito no implementable (medio).
+
+### Lo que NO se toca, y por qué
+
+El presupuesto de 8 preguntas, la regla de densidad numérica y la aparente flojedad del corte (3 de 72 diferidos) **se dejan como están**: son señales de rendimiento, y una ejecución no distingue una regla mal calibrada de un caso donde el resultado era el correcto. Sus reglas de decisión siguen pre-registradas y sin tocar.
+
 ## [1.2.0] — 2026-07-28
 
 Capa de expansión generativa entre el PRD y la spec. Origen: diagnóstico sobre la v1.1 que localizó el punto exacto donde el framework perdía densidad entre capacidad y requisito.

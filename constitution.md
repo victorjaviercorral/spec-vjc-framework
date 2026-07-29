@@ -1,4 +1,4 @@
-# Constitution — Spec VJC Framework v1.2
+# Constitution — Spec VJC Framework v1.2.1
 
 Principios de obligado cumplimiento para todo proyecto gestionado con este framework y toda sesión de agente. Ningún comando, skill ni preferencia puntual puede contradecirlos. Todo cambio a este documento requiere bump de versión en `.claude-plugin/plugin.json` y entrada en el CHANGELOG.
 
@@ -31,7 +31,20 @@ Los ejes son **independientes**: un Boceto en X2 exige protección de datos aunq
 Si falta un dato, se marca `[PENDIENTE: <qué falta y cómo obtenerlo>]`. Nunca se rellena con un valor plausible. Aplica a métricas, evidencia, requisitos, resultados de tests y estado de tareas.
 
 **A.2 Trazabilidad evidencia → requisito. [MVP+]**
-Todo requisito de la spec referencia su origen: evidencia del PRD (`E-n`), requisito crítico (`RC-XX`), capacidad del alcance v1 (`C-n`), ADR, o la asunción de diseño (`AS-nn`) que lo originó según A.4-bis. Un requisito sin origen no se emite. Los requisitos críticos de valor (RC-XX) NUNCA se expresan solo como narrativa: bajan a requisito técnico verificable. Caso de referencia a no repetir: la limpieza EXIF/GPS diluida en "anonimato" durante el piloto de 2026.
+Todo requisito de la spec referencia su origen. Orígenes válidos, conjunto cerrado:
+
+| Origen | Qué es |
+|--------|--------|
+| `E-n` | Evidencia del PRD |
+| `RC-XX` | Requisito crítico de valor |
+| `C-n` | Capacidad del alcance v1 |
+| `A-n` | Asunción de riesgo de la hipótesis |
+| `AS-nn` | Asunción de diseño marcada (A.4-bis) |
+| `ADR-nnn` | Decisión estructural registrada |
+| `Xn` | Obligación derivada del nivel de exposición |
+| `checklist/<nombre> §n` | Ítem de checklist activa |
+
+**Una lente de descomposición no es un origen.** La lente es el generador que produjo el requisito; la procedencia es el hecho u obligación que lo justifica. Confundirlas deja el requisito sin trazabilidad real. Un requisito sin origen no se emite. Los requisitos críticos de valor (RC-XX) NUNCA se expresan solo como narrativa: bajan a requisito técnico verificable. Caso de referencia a no repetir: la limpieza EXIF/GPS diluida en "anonimato" durante el piloto de 2026.
 
 **A.3 Evidencia de verificación, no afirmación de verificación. [siempre]**
 Una tarea o requisito está "hecho" cuando su verificación se ha **ejecutado** y su evidencia (comando y salida, test en verde, captura) queda registrada. Código generado por un agente sin verificación ejecutada se considera no escrito.
@@ -51,6 +64,8 @@ Una **decisión de diseño** no evidenciada es de otra naturaleza: no se comprue
 siempre que se cumplan las tres condiciones: (a) queda visible en el artefacto, nunca embebida en silencio; (b) recibe un identificador `AS-nn` citable desde todo requisito que dependa de ella; y (c) se presenta al usuario para confirmar o corregir antes de cerrar el artefacto. Una asunción que incumpla cualquiera de las tres es una invención.
 
 Donde A.1 dice «requisitos», se refiere a inventar **el hecho que los origina** —una métrica, una obligación legal, una necesidad de usuario no observada—, no a proponer la forma técnica de satisfacer un origen que sí existe. Preguntar lo que puede asumirse con riesgo bajo es sobre-proceso; asumir lo que solo se puede saber preguntando o midiendo es inventar. **La frontera es si el hueco se resuelve eligiendo o averiguando.**
+
+**Regla operativa contra el contrabando.** Un `AS-nn` describe **lo que tú decides**, nunca **lo que el mundo hace**. Está prohibido que una asunción de diseño contenga una afirmación sobre terceros, sobre el mercado o sobre el comportamiento de personas no observadas: «los usuarios prefieren X», «la competencia cobra Y», «este segmento pagaría Z» no son asunciones, son datos sin fuente, y van como `[PENDIENTE]`. Si necesitas reformular una afirmación sobre el mundo como decisión para que quepa aquí, eso es la señal de que no cabe.
 
 ---
 
@@ -113,6 +128,8 @@ Los gates obligatorios son los de la tabla C.14 y el `/preflight` de lanzamiento
 
 **D.16 Reglas ejecutables, no prosa. [siempre]**
 Toda restricción crítica del framework debe poder verificarse ejecutando algo (script, test, hook, comando). Lo que solo puede expresarse como prosa es una **recomendación**, y se etiqueta como tal. Está prohibido presentar una recomendación como si fuera un control.
+
+Controles ejecutables disponibles hoy: `scripts/check-requirements.ps1` verifica `requirements.md` (cierres de lente con razón, origen de todo requisito, densidad por capacidad **antes y después del corte**, criterios de aceptación con requisito existente) y devuelve código de salida. El comando que produce el artefacto lo ejecuta y **lee el resultado en vez de juzgar**. El resto de precondiciones del framework siguen siendo prosa, y así están etiquetadas en los límites conocidos de la guía de usuario.
 
 **D.17 Seguridad proporcional a la exposición. [siempre]**
 `checklists/seguridad.md` con el subconjunto que activa la exposición del proyecto. Universal en toda etapa y exposición, sin excepción: **secretos solo en variables de entorno**, `.env` en `.gitignore` desde el primer commit, y ninguna credencial en prototipos, capturas ni documentación.

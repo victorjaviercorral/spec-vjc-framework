@@ -59,14 +59,14 @@ tags: [spec-vjc]
 **Mecánicas de monetización que hay que construir en v1:** <cobro, planes, límites de uso, facturación… Cada una baja a capacidad `C-n` en §6, o se declara fuera de v1 con su razón.>
 
 ## 3. Alternativas hoy
-| Alternativa actual | Por qué no es suficiente | Fuente y fecha |
-|--------------------|--------------------------|----------------|
+| Alternativa actual | Por qué no es suficiente | Fuente, fecha y cita textual |
+|--------------------|--------------------------|------------------------------|
 | | | |
 | | | |
 
 <Mínimo 2, incluyendo "no hacer nada" o el apaño manual si es lo que ocurre hoy. Si no encuentras ninguna alternativa, sospecha del problema.>
 
-**Datos de terceros, verificados o marcados.** Nombre, precio, posicionamiento y funcionalidad de un producto ajeno son **datos**, no decisiones: llevan fuente y fecha de consulta, o van como `[PENDIENTE]`. Nunca de memoria. Los precios cambian y una tabla verosímil sin fuente es peor que una vacía, porque cierra la pregunta en vez de abrirla.
+**Datos de terceros, verificados o marcados.** Nombre, precio, posicionamiento y funcionalidad de un producto ajeno son **datos**, no decisiones: llevan fuente, fecha de consulta y **cita textual del fragmento**, o van como `[PENDIENTE]`. Nunca de memoria. Un precio con el enlace a la portada del competidor es formalmente una fuente y materialmente nada. Los precios cambian, y una tabla verosímil sin respaldo literal es peor que una vacía porque cierra la pregunta en vez de abrirla.
 
 **Estado de verificación:** <propuesto por el agente, sin validar | validado por el autor el YYYY-MM-DD>
 

@@ -13,6 +13,7 @@ Existe porque una capacidad del PRD es una línea de prosa y un requisito implem
 2. Detente si falta el PRD-lite o si su sección 6 (Alcance v1) está vacía: sin capacidades no hay nada que expandir.
 3. Si la etapa es Boceto o Prototipo, este comando **no aplica**: dilo, explica que sin spec que consuma el artefacto sería producir algo que no cambia ninguna decisión (constitution B.5), y detente.
 4. Lee el contador de preguntas de `project.md`. Tu cupo son **2 preguntas** (constitution B.6-bis). Si el cupo acumulado ya está agotado, tu cupo es 0 y todo hueco de decisión se resuelve con `[ASUMIDO: …]`.
+5. **Comprueba si ya existe `docs/02-spec/spec.md`.** Si existe, estás en **modo retroactivo**: el proyecto tiene spec sin haber pasado por esta etapa. Entonces, y solo entonces, lee también la spec, **conserva la numeración `R-nn` que ya usa** y numera lo nuevo a continuación. Declara el modo retroactivo por escrito en el encabezado del artefacto y regístralo como `AS-nn`: las referencias cruzadas de la spec, los ADR y el prototipo dependen de esos IDs, y renumerar las rompería sin ganar nada. Si no existe spec, **no la busques**: en flujo normal este comando va antes.
 
 ## Paso 1 — Declara las lentes activas, antes de generar nada
 
@@ -60,7 +61,14 @@ La plantilla 1 es la que más se abusa: si un requisito puede expresarse con la 
 
 **Numeración:** asigna `R-01`, `R-02`… secuencial y global. Son los IDs **definitivos**; `/specify` los proyecta sin renumerar.
 
-**Origen obligatorio:** todo requisito cita `E-n`, `RC-XX`, `C-n` o `AS-nn`. Sin origen no se emite (constitution A.2).
+**Origen obligatorio:** todo requisito cita uno del conjunto cerrado de constitution A.2 — `E-n` · `RC-XX` · `C-n` · `A-n` · `AS-nn` · `ADR-nnn` · `Xn` (obligación de exposición) · `checklist/<nombre> §n`. Sin origen no se emite. **La lente no es un origen:** es el generador. Un requisito cuyo único origen sea `L4` no tiene procedencia, tiene autor.
+
+**Todo requisito debe ser implementable y falsable.** Dos antipatrones que están prohibidos porque suman a la cuota de densidad sin especificar nada:
+
+- **La aserción de test disfrazada.** *"Si aparece un recurso privado en el listado público, entonces el sistema deberá tratarlo como defecto bloqueante"* no describe comportamiento del sistema: describe cómo reaccionarías tú. Reescríbelo como el comportamiento que impide que ocurra, o elimínalo y llévalo a la estrategia de test.
+- **El rechazo de una capacidad inexistente.** *"Si alguien solicita mensajería directa, entonces el sistema deberá rechazarla — no existe tal capacidad"* pide implementar el rechazo de algo que no está construido. Si la ausencia es deliberada, es una **exclusión** del alcance, no un requisito.
+
+Prueba rápida: si no puedes escribir el criterio de verificación que lo falsaría, no es un requisito.
 
 ## Paso 4 — Verifica la densidad antes de cortar
 
@@ -75,6 +83,20 @@ Clasifica cada requisito en `v1` · `v2` · `descartado` con el orden de decisi�
 Suma el esfuerzo de v1 y contrástalo con el presupuesto de la etapa en `project.md`. Si no cabe, **presenta el recorte de alcance como propuesta concreta** en vez de estirar el plazo (constitution B.7).
 
 Entrega el recuento explícito: cuántos entran en v1, cuántos van a v2 y cuántos se descartan, **cada uno fuera de v1 con su razón escrita**.
+
+**Vuelve a verificar la composición sobre el conjunto v1**, no solo sobre el bruto. El requisito de estado suele ser el más sofisticado de una capacidad y por eso mismo es el primer candidato a diferirse: si el corte deja una capacidad de complejidad media **sin ningún requisito de plantilla 3 o 6 en v1**, o reconsideras el corte o lo declaras por escrito como deuda aceptada. Verificar solo antes del corte deja pasar exactamente el caso que esta etapa existe para cubrir.
+
+## Paso 5-bis — Ejecuta el control, no lo juzgues
+
+Escribe el artefacto en `docs/02-spec/requirements.md` —**escribirlo es parte del comando, no basta con mostrarlo en conversación**— y ejecuta:
+
+```
+pwsh -File ${CLAUDE_PLUGIN_ROOT}/scripts/check-requirements.ps1 -Path docs/02-spec/requirements.md
+```
+
+(en Windows PowerShell 5.1, `powershell -File`). Verifica de forma determinista: cierres de lente con razón, origen de todo requisito, densidad por capacidad antes y después del corte, y criterios de aceptación que citan requisitos existentes.
+
+**Corrige los fallos y vuelve a ejecutar hasta que salga con código 0.** No interpretes el resultado ni lo describas como aceptable: constitution A.3 exige la evidencia ejecutada, y D.16 exige que la regla crítica se ejecute en lugar de leerse. Pega la salida final en el cierre. Los **avisos** sí requieren tu juicio: son los casos donde el script no puede decidir si una capacidad está por debajo del umbral de complejidad.
 
 ## Paso 6 — Historias de usuario, solo después del corte
 
@@ -95,6 +117,7 @@ Criterios de aceptación en Given/When/Then, y **cada uno cita al menos un `R-nn
 
 Un **único bloque de confirmación**, nunca preguntas sueltas durante el trabajo:
 
+0. La **salida del script** con código 0, o la lista de avisos que requieren tu juicio.
 1. Recuento del corte: v1 / v2 / descartado.
 2. Las asunciones `AS-nn` ordenadas **por impacto**, cada una con su opción por defecto ya aplicada. El usuario confirma en bloque o corrige las que quiera.
 3. Como máximo **2 preguntas**, solo si son datos que no puedes asumir. Ordenadas por impacto y con opción por defecto. Actualiza el contador acumulado en `docs/00-proyecto/project.md`.

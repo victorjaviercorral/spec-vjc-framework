@@ -272,13 +272,37 @@ Es exactamente el modo de fallo que D-02 anticipó, en su forma concreta.
 - **`AS-01` es buen juicio, no obediencia.** Detectó la situación retroactiva y eligió no romper las referencias cruzadas existentes, declarándolo como asunción revisable con su coste de reversión.
 - **Cero preguntas** de las 2 disponibles.
 
-### 8.7 Qué se hace, según la regla escrita de antemano
+### 8.7 Hallazgo — el artefacto nunca llegó a disco
 
-La regla de §5 para 3/3 dice: **mantener tal cual, registrar como primera evidencia y acumular hasta tres ejecuciones antes de tocar nada.** Se respeta.
+`commands/expand.md` dice "Produce `docs/02-spec/requirements.md`". La ejecución **no creó el fichero**: mostró el documento en conversación y `docs/02-spec/` quedó con `spec.md` y `gates/` únicamente. Sin fichero no hay artefacto versionable (constitution A.4), no hay nada que `/specify` pueda proyectar y no hay nada que verificar.
 
-Con una distinción explícita: esa regla protege contra **sobreajustar a una señal de rendimiento ruidosa**. Los hallazgos §8.2 y §8.3 no son señales de rendimiento — son **inconsistencias lógicas demostrables por lectura**, ciertas con una ejecución o con cien. Quedan registradas como correcciones candidatas y su aplicación es decisión del autor, no consecuencia automática de esta ejecución.
+Es el defecto más elemental de los cinco y el más fácil de pasar por alto, porque el output *parecía* completo.
 
-Lo que **no** se toca por ahora: la regla de densidad (D-02 tiene ahora dos observaciones a favor, pero su regla de decisión exige un análisis de supervivencia de requisitos que aún no se ha hecho).
+### 8.8 Qué se hizo, con coste y beneficio
+
+La regla de §5 para 3/3 dice mantener y acumular hasta tres ejecuciones antes de tocar nada. **Se respeta para todo lo que es señal de rendimiento.** Los cinco hallazgos de arriba no lo son: son inconsistencias lógicas y omisiones demostrables por lectura, ciertas con una ejecución o con cien. Corregirlas no es sobreajustar; dejarlas sabiendo que están mal contaminaría las dos ejecuciones siguientes.
+
+| # | Acción | Coste | Beneficio | Decisión |
+|:---:|--------|-------|-----------|----------|
+| **A-1** | **`scripts/check-requirements.ps1`** — primer control ejecutable del framework. Verifica cierres de lente con razón, origen de todo requisito, densidad por capacidad **antes y después del corte**, y AC con requisito existente. Código de salida 0/1 | Un script, ~280 líneas, más su prueba | Convierte **6 predicciones de juicio a determinismo** (P-1, P-2, P-3, P-5, P-6, P-7) y cierra parcialmente D.16, la deuda más antigua y más declarada del framework (E-01 de la auditoría: *"el cambio de mayor apalancamiento del framework entero"*) | **Hecho y verificado** |
+| **A-2** | Composición verificada **también sobre v1**, no solo en bruto (`expand.md` Paso 5 + plantilla + script) | ~15 líneas en 3 ficheros | Cierra el hallazgo §8.2. Protege exactamente los requisitos de la prueba de fuego: el de estado es el más sofisticado y por eso el primer candidato a diferirse | **Hecho** |
+| **A-3** | **A.2 amplía la taxonomía de orígenes** con `Xn` (obligación de exposición), `A-n` y `checklist/<nombre> §n`, y declara explícitamente que **una lente no es un origen** | Tabla en constitution + 3 ficheros | Cierra §8.3. Los 5 requisitos que quedaron fuera de taxonomía pasan a ser válidos: el defecto estaba en la lista, no en el output | **Hecho** |
+| **A-4** | **Requisito implementable y falsable**, con los dos antipatrones nombrados: aserción de test disfrazada y rechazo de capacidad inexistente (`expand.md` + `quality-reviewer` D1) | ~12 líneas | Ataca D-02 por donde importa: convierte una cuota numérica en una barra de calidad. `R-69` y `R-05` del piloto no habrían pasado | **Hecho** |
+| **A-5** | **Modo retroactivo explícito** en Paso 0: si existe `spec.md`, leerla es legítimo, conservar su numeración es obligatorio y **declararlo por escrito** también. Si no existe, no buscarla | ~5 líneas | Elimina la ambigüedad de §8.4. Las ejecuciones futuras quedan marcadas como retroactivas o limpias, y la validación sabe cuál es cuál | **Hecho** |
+| **A-6** | **Escribir el artefacto es parte del comando**, más la llamada obligatoria al script hasta código 0 | ~8 líneas | Cierra §8.7 | **Hecho** |
+| **A-7** | **A.4-bis, regla contra el contrabando**: un `AS-nn` describe lo que tú decides, nunca lo que hace el mundo. Prohibidas las afirmaciones sobre terceros, mercado o comportamiento no observado | ~4 líneas | Cierra D-05, que era la pieza señalada como la que peor envejece en manos ajenas — y el framework se va a publicar | **Hecho** |
+| **A-8** | **Cita textual obligatoria** para datos de competidor, no solo URL (`prd-lite.md` + plantilla + reviewer) | ~4 líneas | Aplica **anticipadamente** la corrección que la regla de decisión reservaba para si P-14 fallaba. Cuesta una frase y evita que la primera ejecución real de §2b produzca precios sin respaldo | **Hecho, adelantado con motivo declarado** |
+| **A-9** | Calibrar el presupuesto de 8 preguntas (D-03) | — | — | **Esperar** — necesita dato de P-12, y no lo hay |
+| **A-10** | Endurecer o retirar la regla de densidad numérica (D-02) | — | — | **Esperar** — A-1 y A-4 atacan sus dos síntomas; si reaparece con el control ejecutable puesto, entonces es la regla y no su aplicación |
+| **A-11** | Revisar si el corte muerde poco (P-10, 4%) | — | — | **Esperar** — una observación no distingue un filtro flojo de un caso donde de verdad casi todo era necesario |
+
+**Efecto neto sobre las predicciones abiertas:** P-1, P-2, P-3, P-5, P-6 y P-7 dejan de depender del juicio del agente y pasan a comprobarse por script. P-14 queda protegida antes de su primera prueba. Quedan como juicio puro: la complejidad de una capacidad (el script avisa, no falla) y el contenido de las asunciones.
+
+### 8.9 Lección colateral, verificada en el entorno real
+
+El script falló al primer intento con `MissingEndCurlyBrace` en una línea sintácticamente correcta. Causa: se escribió en **UTF-8 sin BOM**, y Windows PowerShell 5.1 lee `.ps1` como ANSI, con lo que los acentos y guiones largos corrompían el parseo. Con BOM parsea y ejecuta.
+
+Es exactamente lo que exige constitution D.20 (probado en el entorno real de destino) y merece registro porque el framework se publica: **todo script `.ps1` del framework se guarda en UTF-8 con BOM.** Diagnosticarlo desde el mensaje de error es caro; saberlo de antemano, gratis.
 
 ---
 

@@ -1,6 +1,6 @@
 {
   "name": "spec-vjc-framework",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Framework de desarrollo dirigido por especificación con dos ejes (Etapa: boceto/prototipo/MVP/producto · Exposición: X0-X3) y dos vías (Núcleo, siempre; Producción, al ir a usuarios reales). Sirve igual para una herramienta personal de un día que para un producto con usuarios en la UE.",
   "author": {
     "name": "Victor Javier Corral Franco",

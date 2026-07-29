@@ -97,9 +97,21 @@ Plantillas: **1** ubicua `El <sistema> deberá…` · **2** evento `Cuando <disp
 
 | ID | Pl. | Requisito | Capacidad | Origen | Lente | Clasif. |
 |----|:---:|-----------|:---:|--------|:---:|:---:|
-| R-01 | | | C-n | E-n / RC-XX / C-n / AS-nn | L\<n\> | v1 / v2 / desc |
+| R-01 | | | C-n | E-n / RC-XX / C-n / A-n / AS-nn / ADR-nnn / Xn / checklist §n | L\<n\> | v1 / v2 / desc |
+
+Orígenes válidos: conjunto cerrado de constitution A.2. **La lente no es un origen** — va en su propia columna porque es el generador, no la procedencia.
 
 **Regla de densidad.** Una capacidad de complejidad media —entidad con ≥2 estados, **o** que toca ≥2 recursos, **o** con ≥2 roles— produce **≥8 requisitos**, de los cuales **≥2 de plantilla 5** (no deseada) y **≥1 de plantilla 3 o 6** (estado). Si no se alcanza, la aplicación de lentes fue superficial: se re-ejecutan L4 y L5. **Prohibido rellenar con requisitos ubicuos** para llegar al número. Las capacidades por debajo del umbral de complejidad no tienen mínimo.
+
+**Todo requisito debe ser implementable y falsable.** Si no puedes escribir el criterio de verificación que lo falsaría, no es un requisito. Prohibidos: la aserción de test disfrazada ("tratarlo como defecto bloqueante") y el rechazo de una capacidad inexistente (eso es una exclusión, no un requisito).
+
+**Recuento verificado.** No lo escribas a mano: lo calcula `scripts/check-requirements.ps1`. Pega su salida.
+
+| Capacidad | Total | Pl.5 | Pl.3/6 | v1 | v1 Pl.5 | v1 Pl.3/6 | ¿Cumple? |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| C-n | | | | | | | |
+
+Las tres últimas columnas son las que importan: **la composición se verifica también después del corte**. Una capacidad que cumplía en bruto y cuyo único requisito de estado se difirió a v2 entrega v1 sin ningún requisito de estado, que es el caso que esta etapa existe para cubrir.
 
 ## 5. Corte
 
