@@ -54,7 +54,7 @@ Lo que va entre corchetes se activa según la etapa. Una herramienta personal se
 - **Descartar a tiempo es un éxito**, y debe costar 15 minutos, no una retrospectiva.
 - **Reglas ejecutables, no prosa.** Lo que no se puede verificar ejecutando algo es una recomendación, y se etiqueta como tal.
 
-Los 36 principios completos —más las tres precisiones `-bis`—, con su condición de activación, en [`constitution.md`](constitution.md).
+Los 36 principios completos —más las tres precisiones `-bis` y una `-ter`—, con su condición de activación, en [`constitution.md`](constitution.md).
 
 ## Instalación
 
@@ -85,7 +85,7 @@ Los 36 principios completos —más las tres precisiones `-bis`—, con su condi
 
 ## Estado
 
-v1.2. Ver [CHANGELOG](CHANGELOG.md). La etapa `/expand` es lo más reciente y lo menos rodado: sus ejecuciones reales, debilidades y predicciones están declaradas en [`docs/validacion-1.2.md`](docs/validacion-1.2.md). Integración con tablero Kanvas diferida; el formato de `tasks.md` ya es compatible.
+v1.3. Ver [CHANGELOG](CHANGELOG.md). La etapa `/expand` es lo más reciente y lo menos rodado: sus ejecuciones reales, debilidades y predicciones están declaradas en [`docs/validacion-1.2.md`](docs/validacion-1.2.md). El flujo de dos capas de `/design-system` (F.26-ter) es aporte externo declarado sin ejecución propia todavía. Integración con tablero Kanvas diferida; el formato de `tasks.md` ya es compatible.
 
 ## Licencia
 

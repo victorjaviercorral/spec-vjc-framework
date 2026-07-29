@@ -36,7 +36,7 @@ Tu cupo son **4 preguntas** de las 8 del flujo de definición (constitution B.6-
 > ¿Dónde desarrollas (SO y runtime) y dónde vas a desplegar?
 
 **4 · Identidad** (solo si etapa ≥ Prototipo)
-> Personalidad del producto en 3 adjetivos · referencias visuales que te gustan · qué evitar · claro u oscuro · tono del copy. Y si quieres partir de un design system existente: te listo los de `${CLAUDE_PLUGIN_ROOT}/design-systems/` con la respuesta.
+> Personalidad del producto en 3 adjetivos · 2-3 referencias visuales coherentes entre sí (no dispares) · qué evitar · claro u oscuro · tono del copy. Y si quieres partir de un design system existente: te listo los de `${CLAUDE_PLUGIN_ROOT}/design-systems/` con la respuesta.
 
 → Genera `docs/03-diseno/design-identity.md` con `${CLAUDE_PLUGIN_ROOT}/templates/design-identity.md`.
 

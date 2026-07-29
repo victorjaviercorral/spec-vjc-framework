@@ -2,6 +2,32 @@
 
 Versionado semántico: MAYOR = cambio incompatible de la constitution · MENOR = comandos o checklists nuevos · PARCHE = correcciones.
 
+## [1.3.0] — 2026-07-29
+
+Rediseño de `/design-system` a partir de dos referencias externas aportadas por el autor: **Kevin** (@kvnkld), *"The 10 rules to ship truly polished UI with Claude"* (X, 16 jun 2026), y **Borja Pérez / Helmcode**, *"Creando un sistema de diseño sin tocar Figma"* (LinkedIn, 10 jul 2026) — que a su vez cita al primero como su punto de partida. Motivo: el resultado de diseño de la única ejecución real del framework (LegoVirtualMuseum) se juzgó por debajo del nivel esperado, y el diagnóstico fue que el comando producía especificación en prosa sin ninguna prueba visual renderizada que la contrastara. Detalle de qué se adopta y qué no en `docs/fundamentos.md` §8.
+
+### `/design-system` — flujo de dos capas y prueba visual
+
+- **`brand.md` antes que `tokens.css`.** Nueva capa de criterio en lenguaje humano — personalidad, presupuesto de acento (cuántos momentos fuertes de color de marca por vista), reglas de composición y prohibiciones — que se escribe antes de codificar ningún valor. Es el "criterio externalizado" de la referencia de Helmcode: el modelo no tiene gusto propio, pero ejecuta con precisión si el criterio está en tokens, curvas y reglas en vez de en adjetivos sueltos.
+- **Paso 0 — referencias visuales.** El comando exige 2-3 referencias coherentes entre sí (no dispares) antes de generar nada, extraídas con el mismo método del artículo: paleta y su lógica, tipografía, espaciado, tratamiento de esquina y de sombra, qué hace que un componente se sienta pulido y no genérico.
+- **`tokens.css` gana disciplina concreta**, no solo categorías: motion con curvas de easing nombradas y con propósito (prohibido el `ease`/`ease-in-out`/`linear` del navegador sin declarar), sombras compuestas en capas — anillo, contacto, ambiente, todas a opacidad baja — nunca una sola sombra plana, y un token de escala para el estado táctil (presión).
+- **`components.md` exige motion declarado por estado.** Un estado con transición sin curva ni duración especificada se construirá con el valor por defecto que el criterio prohíbe.
+- **`showcase.html` (nuevo artefacto).** Galería autocontenida que renderiza en vivo cada componente y estado importando `tokens.css` directamente — no capturas, no prosa. El sistema se aprueba mirándolo, con el mismo gate humano visual que `/prototype` (F.27): si algo se ve genérico, se corrige `brand.md` primero, nunca el componente suelto.
+
+### Constitution 1.3.0
+
+- **F.26-ter (nueva).** Codifica el orden criterio→tokens, las dos prohibiciones concretas (easing por defecto, sombra plana) y la exigencia de aprobar el sistema mirando `showcase.html` renderizado, no solo leyendo la especificación. Declarada como aporte externo sin ejecución propia que la valide todavía — mismo estándar de honestidad que el resto de principios sin retro.
+
+### Consistencia menor
+
+- `templates/design-identity.md` pide explícitamente 2-3 referencias coherentes (no "lo que te gusta" sin más), presupuesto de acento y tratamiento de esquina como decisión deliberada; amplía la lista de prohibiciones por defecto.
+- `checklists/uxui.md` añade cuatro controles: criterio antes que tokens, sombra en capas, prohibición de easing por defecto, y verificación de que `showcase.html` se abrió y se miró — no solo se leyó el sistema. Numeración de la checklist corregida en cascada.
+- `commands/spec-init.md` alinea su pregunta de identidad con el nuevo requisito de 2-3 referencias coherentes.
+
+### Lo que NO se toca, y por qué
+
+La capa completa de Design Ops de Helmcode (`design-ops.md`, `quickstart.md`, `linter.md`, `control-de-versiones.md` como archivos separados, más `messaging.md`/`voz.md`) **no se adopta**: las checklists del framework ya cumplen la función de linter, `usage.md` ya cumple la de quickstart, la regla de commit+CHANGELOG ya cumple la de control de versiones, y el campo de tono en `design-identity.md` ya cubre voz. Añadir cuatro a seis archivos más para el mismo control habría infringido la regla del 20% que el propio framework se exige.
+
 ## [1.2.1] — 2026-07-29
 
 Correcciones derivadas de la **primera ejecución real de `/expand`** (LegoVirtualMuseum, MVP · X2). La prueba de fuego salió 3/3 y el intento reveló cinco defectos, todos demostrables por lectura y por tanto corregibles sin esperar más ejecuciones. Detalle, coste y beneficio de cada acción en `docs/validacion-1.2.md` §8.
