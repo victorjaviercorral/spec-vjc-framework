@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>How to install - Human-AI Copilot Framework</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-high": "#2a2a2a",
+                      "secondary": "#adc6ff",
+                      "tertiary": "#ffb3af",
+                      "inverse-primary": "#006c49",
+                      "inverse-surface": "#e5e2e1",
+                      "on-primary": "#003824",
+                      "on-primary-fixed": "#002113",
+                      "surface-tint": "#4edea3",
+                      "on-tertiary-fixed-variant": "#842225",
+                      "on-primary-container": "#00422b",
+                      "on-secondary-container": "#e6ecff",
+                      "text-primary": "#F9FAFB",
+                      "text-muted": "#4B5563",
+                      "on-primary-fixed-variant": "#005236",
+                      "tertiary-fixed": "#ffdad7",
+                      "on-secondary-fixed": "#001a42",
+                      "tertiary-container": "#fc7c78",
+                      "surface-container": "#201f1f",
+                      "background": "#131313",
+                      "primary": "#4edea3",
+                      "surface-base": "#18181B",
+                      "surface": "#131313",
+                      "surface-dim": "#131313",
+                      "border-zinc": "#27272A",
+                      "surface-variant": "#353534",
+                      "on-surface": "#e5e2e1",
+                      "on-error-container": "#ffdad6",
+                      "on-tertiary-container": "#711419",
+                      "primary-fixed": "#6ffbbe",
+                      "surface-container-highest": "#353534",
+                      "secondary-fixed-dim": "#adc6ff",
+                      "on-secondary": "#002e6a",
+                      "error-red": "#EF4444",
+                      "primary-fixed-dim": "#4edea3",
+                      "inverse-on-surface": "#313030",
+                      "primary-container": "#10b981",
+                      "on-surface-variant": "#bbcabf",
+                      "on-tertiary-fixed": "#410005",
+                      "surface-container-lowest": "#0e0e0e",
+                      "tertiary-fixed-dim": "#ffb3af",
+                      "outline": "#86948a",
+                      "surface-container-low": "#1c1b1b",
+                      "on-secondary-fixed-variant": "#004395",
+                      "error-container": "#93000a",
+                      "surface-bright": "#3a3939",
+                      "on-error": "#690005",
+                      "secondary-fixed": "#d8e2ff",
+                      "error": "#ffb4ab",
+                      "on-background": "#e5e2e1",
+                      "secondary-container": "#0566d9",
+                      "outline-variant": "#3c4a42",
+                      "on-tertiary": "#650911"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "container-max": "1280px",
+                      "gutter": "24px",
+                      "section-gap": "120px",
+                      "margin-safe": "32px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "code-sm": ["JetBrains Mono"],
+                      "body-lg": ["Plus Jakarta Sans"],
+                      "headline-lg-mobile": ["Plus Jakarta Sans"],
+                      "body-md": ["Plus Jakarta Sans"],
+                      "headline-lg": ["Plus Jakarta Sans"],
+                      "headline-xl": ["Plus Jakarta Sans"],
+                      "label-caps": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                      "code-sm": ["14px", {"lineHeight": "20px", "fontWeight": "450"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+              }
+            }
+          }
+        }
+</script>
+</head>
+<body class="bg-[#0A0A0A] text-text-primary antialiased min-h-screen w-full flex flex-col font-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter py-4 bg-background/80 backdrop-blur-xl border-b border-zinc-800/50">
+    <div class="text-body-lg font-headline-lg font-bold text-primary tracking-tight">Human-AI Copilot</div>
+    <div class="hidden md:flex gap-8 items-center">
+        <a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="index.html">Metodología</a>
+        <a class="text-primary font-bold border-b-2 border-primary pb-1" href="install.html">How to install</a>
+        <a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="casos.html">Casos de Uso</a>
+    </div>
+    <div class="flex items-center gap-4">
+        <button id="theme-toggle" class="p-2 rounded-full hover:bg-surface-container transition-colors text-on-surface-variant flex items-center justify-center" aria-label="Toggle Dark Mode">
+            <span class="material-symbols-outlined" id="theme-icon">light_mode</span>
+        </button>
+        <a href="https://github.com/victorjaviercorral/Human-AI-Copilot-Framework-for-Product-Development" target="_blank" class="bg-primary-container text-on-primary-container px-4 py-2 rounded font-label-caps hover:bg-primary-fixed transition-colors">
+            Ver en GitHub
+        </a>
+    </div>
+</nav>
+
+<main class="flex-1 w-full max-w-4xl mx-auto pt-32 pb-24 px-8 relative">
+    <!-- Atmospheric glow -->
+    <div class="absolute top-0 right-0 bg-primary/5 blur-[120px] rounded-full pointer-events-none w-[400px] h-[400px]"></div>
+
+    <div class="mb-12">
+        <h1 class="text-headline-xl font-headline-xl text-text-primary mb-4 tracking-tight">How to Install</h1>
+        <p class="text-body-lg text-text-muted">
+            Elige tu agente de Inteligencia Artificial. Human-AI Copilot no es una librería que se instala con npm, sino un sistema operativo mental para agentes autónomos.
+        </p>
+    </div>
+
+    <!-- Agent Selector Tabs (CSS only for visual grouping, stacked for simplicity) -->
+    <div class="flex flex-col gap-12">
+        
+        <!-- Claude Code CLI Section -->
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <span class="material-symbols-outlined text-primary text-3xl">terminal</span>
+                <h2 class="text-headline-lg font-headline-lg text-text-primary">Para Claude Code (CLI)</h2>
+            </div>
+            <div class="flex flex-col gap-6">
+                <div class="glass-panel p-6 rounded-xl border border-border-zinc hover:border-primary/30 transition-colors">
+                    <h3 class="text-body-lg font-bold text-text-primary mb-2">1. Añadir reglas al proyecto</h3>
+                    <p class="text-body-md text-text-muted mb-4">Clona o copia la carpeta <code class="text-primary bg-primary/10 px-1 rounded">.agents/</code> en la raíz de tu proyecto. Asegúrate de incluir los prompts en la configuración de Claude.</p>
+                </div>
+                <div class="glass-panel p-6 rounded-xl border border-border-zinc hover:border-primary/30 transition-colors">
+                    <h3 class="text-body-lg font-bold text-text-primary mb-2">2. Inicializar Spec</h3>
+                    <p class="text-body-md text-text-muted mb-4">Arranca Claude Code y ejecuta el comando de triaje para generar la estructura documental base.</p>
+                    <div class="bg-[#111] border border-border-zinc rounded-lg p-4 font-code-sm text-sm text-text-primary flex justify-between items-center">
+                        <code>claude /spec-init</code>
+                    </div>
+                </div>
+                <div class="glass-panel p-6 rounded-xl border border-border-zinc hover:border-primary/30 transition-colors">
+                    <h3 class="text-body-lg font-bold text-text-primary mb-2">3. Flujo Determinista</h3>
+                    <p class="text-body-md text-text-muted mb-4">Sigue el flujo de comandos para expandir los requisitos y construir el PRD y la especificación técnica.</p>
+                    <div class="bg-[#111] border border-border-zinc rounded-lg p-4 font-code-sm text-sm text-text-primary">
+                        <div class="text-text-muted mb-2"># Multiplicador de requisitos (Event Storming)</div>
+                        <code>claude /expand</code>
+                        <div class="text-text-muted mt-4 mb-2"># Revisión ciega de calidad (Quality Gate)</div>
+                        <code>claude /quality-gate</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Google Antigravity Section -->
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <span class="material-symbols-outlined text-secondary text-3xl">rocket_launch</span>
+                <h2 class="text-headline-lg font-headline-lg text-text-primary">Para Google Antigravity</h2>
+            </div>
+            <div class="flex flex-col gap-6">
+                <div class="glass-panel p-6 rounded-xl border border-border-zinc hover:border-secondary/30 transition-colors">
+                    <h3 class="text-body-lg font-bold text-text-primary mb-2">1. Instalar entorno y plugins</h3>
+                    <p class="text-body-md text-text-muted mb-4">Instala Antigravity y asegúrate de añadir el plugin <code class="text-secondary bg-secondary/10 px-1 rounded">Human-AI-Copilot-Framework</code> a la carpeta de configuración.</p>
+                    <div class="bg-[#111] border border-border-zinc rounded-lg p-4 font-code-sm text-sm text-text-primary">
+                        <code>agy install</code>
+                    </div>
+                </div>
+                <div class="glass-panel p-6 rounded-xl border border-border-zinc hover:border-secondary/30 transition-colors">
+                    <h3 class="text-body-lg font-bold text-text-primary mb-2">2. Iniciar con Goals</h3>
+                    <p class="text-body-md text-text-muted mb-4">Usa la interfaz interactiva para asignar el objetivo inicial al framework.</p>
+                    <div class="bg-[#111] border border-border-zinc rounded-lg p-4 font-code-sm text-sm text-text-primary">
+                        <code>/goal usa el skill spec-init para este proyecto</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ChatGPT / Other AI Section -->
+        <section class="opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="material-symbols-outlined text-text-muted text-3xl">forum</span>
+                <h2 class="text-headline-lg font-headline-lg text-text-muted">Para ChatGPT / Otras IAs <span class="ml-2 text-label-caps font-bold bg-surface-variant text-text-primary px-2 py-1 rounded">[PENDIENTE]</span></h2>
+            </div>
+            <div class="glass-panel p-6 rounded-xl border border-border-zinc border-dashed">
+                <p class="text-body-md text-text-muted">
+                    La integración nativa de comandos (slash commands) no está disponible en interfaces de chat estándar. Actualmente, para usar el Human-AI Copilot en ChatGPT, debes copiar y pegar manualmente el contenido de los prompts y reglas ubicados en la carpeta <code>.agents/rules/</code> al inicio de cada conversación. Estamos trabajando en una solución más automatizada.
+                </p>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<script src="theme.js"></script>
+</body>
+</html>
