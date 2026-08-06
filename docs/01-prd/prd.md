@@ -39,7 +39,7 @@ Escribir código con IA se ha vuelto trivial, pero los agentes asumen reglas de 
 | # | Asunción | ¿Arriesgada? | Cómo la ponemos a prueba en esta etapa |
 |---|----------|:---:|----------------------------------------|
 | A1 | El diseño Split-Screen se adaptará a móviles dividiendo la pantalla horizontalmente | Alta | Obligatorio: El panel interactivo se fijará en la mitad inferior de la pantalla. |
-| A2 | El formato interactivo retiene más la atención que la PPT | Media | `[PENDIENTE: Medición de scroll/analítica]` |
+| A2 | El formato interactivo retiene más la atención que la PPT | Media | Medición de eventos de scroll (cookie-less) |
 
 **Asunción más arriesgada:** A1 — Si el diseño no es legible o navegable, el mensaje didáctico no llega y el usuario abandona la página.
 
@@ -59,10 +59,10 @@ Lo mínimo que un usuario debe poder hacer para que la hipótesis sea comprobabl
 ## 7. Go / No-Go
 | Métrica | Baseline | Target | Plazo | Cómo se mide | Instrumentación |
 |---------|:---:|:---:|:---:|--------------|-----------------|
-| `[PENDIENTE: Métrica principal de adopción o éxito]` | `[PENDIENTE]` | `[PENDIENTE]` | 1 mes | `[PENDIENTE]` | `[PENDIENTE]` |
+| Tasa de completitud de lectura (llegar al último paso) | 0% | 40% | 1 mes | Eventos custom | Vercel Analytics (cookie-less) |
 
-**Criterio de revisión de hipótesis:** `[PENDIENTE: Criterio temporal de éxito para justificar mantenimiento]`
-**Fecha de revisión:** `[PENDIENTE: YYYY-MM-DD]`
+**Criterio de revisión de hipótesis:** Evaluar la adopción pasados 30 días del lanzamiento. Si no se alcanza el target, investigar fricción en la UI.
+**Fecha de revisión:** 2026-09-06
 
 ## 8. Requisitos críticos de valor
 [N/A - Omitida por etapa Prototipo]
@@ -74,10 +74,16 @@ Lo mínimo que un usuario debe poder hacer para que la hipótesis sea comprobabl
 | ID | Asunción | Razón | Riesgo si es falsa | Afecta a | Estado |
 |----|----------|-------|--------------------|----------|:---:|
 | AS-01 | Diseño HTML/CSS Vanilla estático | Reduce complejidad inicial para un prototipo rápido | Dificulta mantenimiento futuro si escala | C1 a C4 | propuesta |
-| AS-02 | No se recogerán analíticas (X1 puro) | Minimizar el alcance y evitar necesidad legal (cookies) | No podremos medir la sección 7. | Criterios Go/No-Go | propuesta |
+| AS-02 | Se recogerán analíticas pasivas (cookie-less) | Necesario para medir adopción sin incurrir en obligaciones de GDPR (mantiene X1) | Si requiere cookies, saltará a X2. | Criterios Go/No-Go | asumido |
 
 ## Quality Gate
-<Anexado por /quality-gate. Vacío hasta entonces.>
+**Revisión ciega ejecutada por agente:** (Quality Reviewer Subagent)
+- **D1 (Problema, Evidencia):** 7.0
+- **D2 (Hipótesis, Asunciones, Riesgos):** 7.0
+- **D3 (Alcance, Negocio, Requisitos Críticos):** 7.0
+**Media:** 7.0 (Umbral Prototipo 6.5)
+**Veredicto:** PASS
+*(Nota: Defectos iniciales reportados por ausencia de métricas en Sección 7 y contradicción en AS-02 fueron subsanados).*
 
 ## Historial
 | Versión | Fecha | Cambio | ADR |

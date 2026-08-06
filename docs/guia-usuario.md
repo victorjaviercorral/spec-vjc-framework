@@ -1,4 +1,4 @@
-# Guía de usuario — Spec VJC Framework v1.2
+# Guía de usuario — Spec VJC Framework v1.3.1
 
 Guía de referencia completa. Sirve tanto para quien construyó el framework como para cualquiera que quiera usarlo desde cero.
 
@@ -24,9 +24,11 @@ Eso se consigue con dos ejes independientes. La mayoría de metodologías tienen
 ## 2. Instalación
 
 ```
-/plugin marketplace add victorjaviercorral/spec-vjc-framework
+/plugin marketplace add victorjaviercorral/Human-AI-Copilot-Framework-for-Product-Development
 /plugin install spec-vjc-framework@spec-vjc-framework
 ```
+
+El repo se llama `Human-AI-Copilot-Framework-for-Product-Development` (nombre público en GitHub); el identificador técnico del plugin/marketplace sigue siendo `spec-vjc-framework` y no cambia — es el nombre que usan los comandos `/plugin install` y `/plugin update`.
 
 Verifica que aparecen los 15 comandos. Quedan disponibles en todos los proyectos: no se copia nada por proyecto.
 
