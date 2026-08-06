@@ -18,6 +18,6 @@
 - **Cuerpo y Código:** Fuente monoespaciada para pequeños *snippets* o etiquetas que imiten código, y sans-serif legible para párrafos descriptivos.
 
 ## 5. Prohibiciones Estrictas
-- **NO al modo claro deslumbrante:** Perdería el efecto "potente".
+- **NO forzar un modo por encima de la elección real del usuario.** [CORREGIDO — decisión revertida por el autor, 2026-08-06] Este documento decía originalmente "NO al modo claro deslumbrante", y esa regla se implementó literalmente forzando `dark` por JS en `ProductFramework.tsx`, ignorando el toggle de tema real del resto del sitio (`useTheme`, persistido en `localStorage`). Un usuario con Claro seleccionado desde Home veía la página ponerse en negro sin haberlo pedido. El autor corrigió esto explícitamente: la página debe seguir siempre la selección real del usuario, nunca imponer una propia. El modo oscuro sigue siendo el diseño de referencia (paleta pensada primero para oscuro), pero ahora existe una variante clara genuina (`--fw-*` en `src/index.css`, con valores propios en `:root` y `.dark`) en vez de un modo claro no implementado detrás de una prohibición de facto.
 - **NO a las animaciones genéricas:** Toda animación (`hover`, `scroll`) debe sentirse física, con curvas de aceleración deliberadas.
 - **NO a muros de texto:** Si se puede explicar con una tarjeta o un diagrama interactivo, no se escribe un párrafo.
