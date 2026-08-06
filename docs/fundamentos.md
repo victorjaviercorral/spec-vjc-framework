@@ -66,7 +66,7 @@ La fase con más deuda con la ingeniería de requisitos clásica, y la que más 
 | **L7 · Auditoría y su mitad negativa** | **Privacy by Design** — Ann Cavoukian, codificado en el art. 25 del GDPR; y el principio de **minimización** del art. 5.1.c | **Original en su formulación:** la "mitad negativa" —declarar qué NO debe registrarse jamás— no la he visto exigida como requisito con ID en ningún framework. Nace de una observación simple: un registro de auditoría mal delimitado es él mismo una brecha |
 | **Historias de usuario y criterios de aceptación** | Las **tres C** de **Ron Jeffries** (2001: tarjeta, conversación, confirmación); **Given/When/Then** de **Dan North** y el desarrollo guiado por comportamiento (BDD, ~2006) | **Invertimos el orden habitual.** En la práctica ágil la historia viene primero y el requisito se deriva de ella. Aquí el requisito EARS es la unidad, y la historia es el envoltorio de aceptación que se escribe **después del corte**. Un criterio de aceptación sin requisito detrás es un defecto |
 | **Trazabilidad de requisitos** | Matriz de trazabilidad, práctica formalizada en la norma **ISO/IEC/IEEE 29148** de ingeniería de requisitos | Tomada íntegra: todo requisito con origen, sin origen no se emite |
-| **Los dos techos de activación** | — | **Original, y es la parte con menos respaldo externo.** La idea de escalar el rigor por riesgo es estándar; la de poner **dos filtros antes del generador en lugar de uno después** es nuestra, y está declarada como no validada en [`validacion-1.2.md`](validacion-1.2.md) |
+| **Los dos techos de activación** | — | **Original, y es la parte con menos respaldo externo.** La idea de escalar el rigor por riesgo es estándar; la de poner **dos filtros antes del generador en lugar de uno después** es nuestra, y está declarada como no validada en un documento interno de autoevaluación (no publicado en este repo) |
 
 ---
 
@@ -172,7 +172,7 @@ Lo honesto es señalar dónde el framework no tiene red debajo:
 7. **La prohibición de rellenar datos de competidor de memoria**, aun siendo plausibles. Es más restrictivo que la práctica habitual del sector, donde un análisis competitivo generado se acepta como punto de partida sin marcar su procedencia.
 8. **Riesgos con señal observable en lugar de probabilidad estimada.** Contradice deliberadamente la forma canónica del registro de riesgos.
 
-Los puntos 2, 4, 5, 7 y 8 son los que están sin verificar. Sus predicciones y sus reglas de decisión están escritas por adelantado en [`validacion-1.2.md`](validacion-1.2.md), incluida la que dice cuándo revertir en lugar de parchear.
+Los puntos 2, 4, 5, 7 y 8 son los que están sin verificar. Sus predicciones y sus reglas de decisión están escritas por adelantado en un documento interno de autoevaluación (no publicado en este repo), incluida la que dice cuándo revertir en lugar de parchear.
 
 ---
 

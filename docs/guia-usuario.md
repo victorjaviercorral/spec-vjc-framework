@@ -150,7 +150,7 @@ Los dos ejes tienen alcances distintos y guía propia:
 
 Referencia operativa completa: [modelo.md](modelo.md). Principios: [constitution.md](../constitution.md).
 
-De dónde viene cada decisión —EARS, Event Storming, statecharts, sagas, inspecciones de Fagan, appetite de Shape Up, la norma europea aplicable— y qué partes son originales y por tanto están sin red: [fundamentos.md](fundamentos.md). Autoevaluación crítica de la etapa `/expand`, con sus debilidades y predicciones: [validacion-1.2.md](validacion-1.2.md).
+De dónde viene cada decisión —EARS, Event Storming, statecharts, sagas, inspecciones de Fagan, appetite de Shape Up, la norma europea aplicable— y qué partes son originales y por tanto están sin red: [fundamentos.md](fundamentos.md). Autoevaluación crítica de la etapa `/expand`, con sus debilidades y predicciones: documento interno de autoevaluación (no publicado en este repo).
 
 ---
 
@@ -278,7 +278,7 @@ Honestidad sobre lo que la versión actual no hace:
 
 - **Enforcement mayoritariamente no determinista, con una excepción.** Casi todas las precondiciones del framework son instrucciones al agente, no controles que bloqueen — incumplimiento parcial de su propio principio D.16, escrito así en vez de presentarse como más robusto de lo que es. La excepción es `scripts/check-requirements.ps1`, que verifica `requirements.md` de verdad y devuelve código de salida: `/expand` lo ejecuta y lee el resultado en lugar de juzgar. Es el primer control real del framework y el modelo de los que vengan. La capa de hooks sigue siendo el siguiente salto.
 - **Los techos de `/expand` siguen siendo juicio.** "¿Esta entidad tiene ≥2 estados?" lo decide el agente; el script avisa pero no puede decidirlo. La mitigación —declarar por escrito la razón de cada lente cerrada— hace el juicio **auditable**, y eso sí lo comprueba el script. Lo que ya no es juicio: la densidad por capacidad, la composición después del corte, la presencia de origen y la trazabilidad de cada criterio de aceptación.
-- **`/expand` es la parte menos rodada del framework.** Se publica con las ejecuciones reales declaradas en `docs/validacion-1.2.md`, junto con sus predicciones pre-registradas y las reglas de decisión escritas de antemano sobre qué hacer según el resultado. Léelo antes de confiar en esta etapa para algo caro.
+- **`/expand` es la parte menos rodada del framework.** Se publica con las ejecuciones reales declaradas en un documento interno de autoevaluación (no publicado en este repo), junto con sus predicciones pre-registradas y las reglas de decisión escritas de antemano sobre qué hacer según el resultado. Confía en esta etapa con cautela para algo caro.
 - **Sin evals del framework.** No hay forma de demostrar con dato que una versión mejora a la anterior; solo el registro de métricas de `project.md` que las alimentará.
 - **Integración con Kanvas diferida.** El formato de `tasks.md` ya es compatible.
 - **Puntos pendientes de smoke test** en la integración con Obsidian: ver [obsidian.md §9](obsidian.md#9-qué-queda-por-verificar).

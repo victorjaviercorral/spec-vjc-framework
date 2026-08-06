@@ -54,7 +54,7 @@ La capa completa de Design Ops de Helmcode (`design-ops.md`, `quickstart.md`, `l
 
 ## [1.2.1] — 2026-07-29
 
-Correcciones derivadas de la **primera ejecución real de `/expand`** (LegoVirtualMuseum, MVP · X2). La prueba de fuego salió 3/3 y el intento reveló cinco defectos, todos demostrables por lectura y por tanto corregibles sin esperar más ejecuciones. Detalle, coste y beneficio de cada acción en `docs/validacion-1.2.md` §8.
+Correcciones derivadas de la **primera ejecución real de `/expand`** (LegoVirtualMuseum, MVP · X2). La prueba de fuego salió 3/3 y el intento reveló cinco defectos, todos demostrables por lectura y por tanto corregibles sin esperar más ejecuciones. Detalle, coste y beneficio de cada acción en `docs/validacion-1.2.md` §8 *(nota 2026-08-06: ese documento se trasladó a un repositorio privado; no está disponible en este repo)*.
 
 ### Primer control ejecutable del framework
 
@@ -180,7 +180,7 @@ Se deduce de la pregunta de dinero que el triaje ya hace —extrayendo un bit m�
 - `docs/diagramas.md`: décimo diagrama, **expansión de requisitos y los dos techos**; `/expand` incorporado al mapa comando ↔ artefacto y a la Vía Núcleo por etapa.
 - `docs/guia-etapa.md` y `docs/guia-exposicion.md` reflejan el reparto de lentes por su eje respectivo.
 - `docs/guia-usuario.md`: `/expand` entre los cinco momentos que más importan, tres preguntas frecuentes nuevas y límites conocidos ampliados.
-- **`docs/validacion-1.2.md` nueva**: autoevaluación crítica valorada por madurez actual y no por potencial, debilidades con su prueba de refutación, predicciones pre-registradas y reglas de decisión escritas por adelantado. Declara explícitamente cuántas ejecuciones reales tiene el diseño al publicarse.
+- **`docs/validacion-1.2.md` nueva**: autoevaluación crítica valorada por madurez actual y no por potencial, debilidades con su prueba de refutación, predicciones pre-registradas y reglas de decisión escritas por adelantado. Declara explícitamente cuántas ejecuciones reales tiene el diseño al publicarse. *(Nota 2026-08-06: trasladada a un repositorio privado; no está disponible en este repo.)*
 - **`docs/fundamentos.md` nueva**: mapa de procedencia de cada pieza del framework —EARS (Mavin, RE'09), Event Storming (Brandolini), statecharts (Harel), sagas (Garcia-Molina y Salem), valores frontera (Myers), matriz de control de acceso (Lampson) y RBAC (NIST), inspecciones formales (Fagan), escalas ancladas (Smith y Kendall), appetite (Shape Up), walking skeleton (Cockburn), checklists (Gawande), métricas de proceso (Accelerate)— más la norma europea aplicable, lo descartado con su razón, y **la lista explícita de lo que es original y por tanto no tiene respaldo externo**.
 
 ### Deuda declarada
@@ -226,7 +226,7 @@ Mientras esta reescritura estaba en curso, una sesión paralela ejecutó una ret
 
 ## [1.0.0] — 2026-07-27
 
-Reescritura completa. Origen: auditoría técnica documentada en `docs/auditoria-v0.1.md`, que identificó 32 hallazgos y 3 fallos estructurales sobre la v0.1.
+Reescritura completa. Origen: auditoría técnica documentada en `docs/auditoria-v0.1.md`, que identificó 32 hallazgos y 3 fallos estructurales sobre la v0.1. *(Nota 2026-08-06: ese documento se trasladó a un repositorio privado; no está disponible en este repo.)*
 
 ### Modelo — dos ejes y dos vías
 - **Eje Etapa** (`Boceto` · `Prototipo` · `MVP` · `Producto`) sustituye al tier único, y absorbe el time-boxing: cada etapa lleva presupuesto de tiempo.

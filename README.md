@@ -163,7 +163,7 @@ function human-ai-copilot {
 
 ## Status
 
-v1.3.1 — see [CHANGELOG.md](CHANGELOG.md) for the full history. `/expand` is the newest and least battle-tested stage; its real runs, known weaknesses, and pre-registered predictions are logged in [`docs/validacion-1.2.md`](docs/validacion-1.2.md). The two-layer `/design-system` flow is an externally contributed addition not yet run on a real project. Kanban board integration is deferred; the `tasks.md` format is already compatible.
+v1.3.1 — see [CHANGELOG.md](CHANGELOG.md) for the full history. `/expand` is the newest and least battle-tested stage; its real runs, known weaknesses, and pre-registered predictions are logged in an internal self-evaluation (not published in this repo). The two-layer `/design-system` flow is an externally contributed addition not yet run on a real project. Kanban board integration is deferred; the `tasks.md` format is already compatible.
 
 ## License
 
